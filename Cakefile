@@ -32,7 +32,7 @@ task 'publish-docs', 'Publish Documentation', ->
 
   execute "git status", /nothing to commit .working directory clean/, ->
     tmp = '~/tmp/publish-docs-tmp'
-    execute "test -d #{tmp} && rm -r #{tmp} && mkdir -p #{tmp}", null, ->
+    execute "test -d #{tmp} || rm -r #{tmp} && mkdir -p #{tmp}", null, ->
       execute "cp -r ./docs/* #{tmp}", null, ->
         execute "git checkout gh-pages", /Switched to branch 'gh-pages'/, ->
           execute "cp -r #{tmp}/* .", null, ->
