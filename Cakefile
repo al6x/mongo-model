@@ -10,14 +10,14 @@ task 'compile', 'Compile CoffeeScript to JavaScript', ->
 task 'clear', 'Clear compiled JavaScript', ->
   execute "find ./lib -name '*.js' | xargs rm"
 
-task 'docs', 'Generate Documentation', ->
-  execute 'docco examples/*.coffee'
+task 'spec', 'Run Specs', ->
+  execute 'jasmine-node --coffee spec'
 
 task 'docs-spec', 'Run Specs for Documentation', ->
   execute 'jasmine-node --coffee examples'
 
-task 'spec', 'Run Specs', ->
-  execute 'jasmine-node --coffee spec'
+task 'generate-docs', 'Generate Documentation', ->
+  execute 'docco examples/*.coffee'
 
 task 'publish-docs', 'Publish Documentation', ->
   execute = (cmd, check, callback) ->
