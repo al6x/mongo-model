@@ -8,7 +8,7 @@ task 'compile', 'Compile CoffeeScript to JavaScript', ->
   execute 'coffee --compile --output ./lib ./lib'
 
 task 'clear', 'Clear compiled JavaScript', ->
-  execute "find ./lib -name '*.js' | xargs rm"
+  execute "find ./lib -name '*.js' | xargs rm -f"
 
 task 'spec', 'Run Specs', ->
   execute 'jasmine-node --coffee spec'
@@ -32,7 +32,7 @@ task 'publish-docs', 'Publish Documentation', ->
 
   execute "git status", /nothing to commit .working directory clean/, ->
     tmp = '~/tmp/publish-docs-tmp'
-    execute "test -d #{tmp} || rm -r #{tmp} && mkdir -p #{tmp}", null, ->
+    execute "rm -rf #{tmp} && mkdir -p #{tmp}", null, ->
       execute "cp -r ./docs/* #{tmp}", null, ->
         execute "git checkout gh-pages", /Switched to branch 'gh-pages'/, ->
           execute "cp -r #{tmp}/* .", null, ->
