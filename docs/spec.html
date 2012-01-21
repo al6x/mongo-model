@@ -1,0 +1,21 @@
+<!DOCTYPE html>  <html> <head>   <title>spec.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="driver.html">                 driver.coffee               </a>                                           <a class="source" href="model.html">                 model.coffee               </a>                                           <a class="source" href="spec.html">                 spec.coffee               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               spec.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;coffee-script&#39;</span><span class="p">)</span>
+<span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./driver&#39;</span><span class="p">)</span>
+
+<span class="nx">require</span> <span class="s1">&#39;open3&#39;</span>
+
+<span class="nv">dir = </span><span class="nx">File</span><span class="p">.</span><span class="nx">expand_path</span> <span class="s2">&quot;#{__FILE__}/../..&quot;</span>
+
+<span class="nx">describe</span> <span class="s2">&quot;Documentation&quot;</span> <span class="nx">do</span>
+  <span class="o">%</span><span class="nx">w</span><span class="p">(</span>
+    <span class="nx">driver</span>
+    <span class="nx">migration</span>
+    <span class="nx">persistence</span>
+  <span class="p">).</span><span class="nx">each</span> <span class="nx">do</span> <span class="o">|</span><span class="nx">name</span><span class="o">|</span>
+    <span class="nx">it</span> <span class="s2">&quot;should execute &#39;#{name}.rb&#39; without errors&quot;</span> <span class="nx">do</span>
+      <span class="nx">stdin</span><span class="p">,</span> <span class="nx">stdout</span><span class="p">,</span> <span class="nv">stderr = </span><span class="nx">Open3</span><span class="p">.</span><span class="nx">popen3</span> <span class="s2">&quot;ruby #{dir}/docs/#{name}.rb&quot;</span>
+      <span class="nx">stderr</span><span class="p">.</span><span class="nx">read</span><span class="p">.</span><span class="nx">should</span> <span class="nx">be_empty</span>
+    <span class="nx">end</span>
+  <span class="nx">end</span>
+<span class="nx">end</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html>

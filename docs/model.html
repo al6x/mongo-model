@@ -1,0 +1,61 @@
+<!DOCTYPE html>  <html> <head>   <title>model.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="assignment.html">                 assignment.coffee               </a>                                           <a class="source" href="associations.html">                 associations.coffee               </a>                                           <a class="source" href="basics.html">                 basics.coffee               </a>                                           <a class="source" href="callbacks.html">                 callbacks.coffee               </a>                                           <a class="source" href="composite.html">                 composite.coffee               </a>                                           <a class="source" href="database.html">                 database.coffee               </a>                                           <a class="source" href="driver.html">                 driver.coffee               </a>                                           <a class="source" href="examples-spec.html">                 examples-spec.coffee               </a>                                           <a class="source" href="model.html">                 model.coffee               </a>                                           <a class="source" href="modifiers.html">                 modifiers.coffee               </a>                                           <a class="source" href="queries.html">                 queries.coffee               </a>                                           <a class="source" href="synchronous.html">                 synchronous.coffee               </a>                                           <a class="source" href="validations.html">                 validations.coffee               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               model.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <p>Domain Model for MongoDB (Node.JS).</p>
+
+<ul>
+<li>Models are (almost) pure JavaScript Objects.</li>
+<li>Minimum extra abstractions, trying to keep things as close to the semantic of MongoDB as possible.</li>
+<li><a href="basics.html">Schema-less, dynamic</a> (with ability to specify types for <a href="assignment.html">mass-assignment</a>).</li>
+<li>Models can be saved to <a href="database.html">any collection</a>, dynamically.</li>
+<li>Full support for <a href="composite.html">composite / embedded objects</a> (with <a href="validations.html">validations</a>,
+<a href="callbacks.html">callbacks</a>, ...).</li>
+<li><a href="queries.html">Scopes</a> and handy helpers for <a href="queries.html">querying</a>.</li>
+<li>Support for <a href="database.html">multiple</a> simultaneous connections and databases.</li>
+<li>Support for <a href="associations.html">associations</a>.</li>
+<li>Same API for <a href="driver.html">Driver</a> and Model.</li>
+<li>Optional support for <a href="synchronous.html">synchronous</a> mode (with Fibers).</li>
+<li>Small codebase.</li>
+</ul>
+
+<h3>Installation</h3>
+
+<pre><code>npm install mongo-model
+</code></pre>
+
+<h3>Examples</h3>
+
+<p><a href="basics.html">Basics</a>, <a href="composite.html">Composite and Embedded Models</a>, <a href="queries.html">Queries and Scopes</a>,
+<a href="validations.html">Validations</a>, <a href="callbacks.html">Callbacks</a>, <a href="associations.html">Associations</a>,
+<a href="assignment.html">Attribute Assignment &amp; Mass Assignment</a>, <a href="modifiers.html">Upsersts and Modifiers</a>,
+<a href="database.html">Working with Connnections and Databases</a>, <a href="synchronous.html">Optional Synchronous Mode</a>.</p>
+
+<p>You may also consider using only part of the Model - the <a href="driver.html">Driver</a>. It's independent from
+the Model.</p>
+
+<p>All examples written in <strong>optional</strong> <a href="synchronous.html">synchronous</a> mode (with Fibers), it's made
+for simplicity and to demonstrate how to use Model with Fibers &amp; CoffeeScript.</p>
+
+<p>Note: Model itself doesn't depends on Fibers or CoffeeScript, <strong>You can use it with plain old JavaScript and
+asynchronous callbacks</strong>.</p>
+
+<p>So, You need to install Fibers &amp; CoffeeScript to run examples:</p>
+
+<pre><code>npm install coffee-script fibers
+</code></pre>
+
+<p>Next clone project, go to <code>docs/samples</code> folder and run any example (I recommend You to start
+with <a href="basics.html">basics</a>):</p>
+
+<pre><code>git clone git://github.com/alexeypetrushin/mongo-model.git
+cd mongo-model/docs/samples
+coffee basics.coffee
+</code></pre>
+
+<p>Note: if there will be error like <code>no coffee command</code> - try install coffee-script
+as global package <code>npm install coffee-script -g</code>.</p>
+
+<h3>Project</h3>
+
+<p>The project is <a href="https://github.com/alexeypetrushin/mongo-model">hosted on GitHub</a>.
+You can report bugs and discuss features
+on the <a href="https://github.com/alexeypetrushin/mongo-model/issues">issues page</a>.</p>             </td>             <td class="code">               <div class="highlight"><pre>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

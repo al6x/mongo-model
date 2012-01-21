@@ -1,0 +1,28 @@
+<!DOCTYPE html>  <html> <head>   <title>examples-spec.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="assignment.html">                 assignment.coffee               </a>                                           <a class="source" href="associations.html">                 associations.coffee               </a>                                           <a class="source" href="basics.html">                 basics.coffee               </a>                                           <a class="source" href="callbacks.html">                 callbacks.coffee               </a>                                           <a class="source" href="composite.html">                 composite.coffee               </a>                                           <a class="source" href="database.html">                 database.coffee               </a>                                           <a class="source" href="driver.html">                 driver.coffee               </a>                                           <a class="source" href="examples-spec.html">                 examples-spec.coffee               </a>                                           <a class="source" href="model.html">                 model.coffee               </a>                                           <a class="source" href="modifiers.html">                 modifiers.coffee               </a>                                           <a class="source" href="queries.html">                 queries.coffee               </a>                                           <a class="source" href="synchronous.html">                 synchronous.coffee               </a>                                           <a class="source" href="validations.html">                 validations.coffee               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               examples-spec.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <p>Spec for Documentation.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">_ = </span><span class="nx">require</span> <span class="s1">&#39;underscore&#39;</span>
+<span class="nx">require</span> <span class="s1">&#39;mary&#39;</span>
+<span class="p">{</span><span class="nx">exec</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span> <span class="s1">&#39;child_process&#39;</span>
+
+<span class="nv">examples = </span><span class="p">[</span>
+  <span class="s1">&#39;assignment&#39;</span>
+  <span class="s1">&#39;associations&#39;</span>
+  <span class="s1">&#39;basics&#39;</span>
+  <span class="s1">&#39;callbacks&#39;</span>
+  <span class="s1">&#39;composite&#39;</span>
+  <span class="s1">&#39;database&#39;</span>
+  <span class="s1">&#39;driver&#39;</span>
+  <span class="s1">&#39;model&#39;</span>
+  <span class="s1">&#39;modifiers&#39;</span>
+  <span class="s1">&#39;queries&#39;</span>
+  <span class="s1">&#39;synchronous&#39;</span>
+  <span class="s1">&#39;validations&#39;</span>
+<span class="p">]</span>
+
+<span class="nx">describe</span> <span class="s2">&quot;Examples&quot;</span><span class="p">,</span> <span class="o">-&gt;</span>
+  <span class="nx">_</span><span class="p">(</span><span class="nx">examples</span><span class="p">).</span><span class="nx">each</span> <span class="nf">(name) -&gt;</span>
+    <span class="nx">it</span><span class="p">.</span><span class="nx">async</span> <span class="s2">&quot;should execute &#39;#{name}.coffee&#39; without errors&quot;</span><span class="p">,</span> <span class="o">-&gt;</span>
+      <span class="nx">exec</span> <span class="s2">&quot;coffee #{__dirname}/#{name}.coffee&quot;</span><span class="p">,</span> <span class="nf">(err, stdout, stderr) -&gt;</span>
+        <span class="k">if</span> <span class="nx">err</span> <span class="o">or</span> <span class="nx">stderr</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span>
+          <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span> <span class="s2">&quot;example #{name} is invalid!&quot;</span>
+        <span class="nx">it</span><span class="p">.</span><span class="nx">next</span><span class="p">()</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
