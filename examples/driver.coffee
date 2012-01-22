@@ -13,7 +13,7 @@ Driver = require 'mongo-model/lib/driver'
 require 'mongo-model/lib/driver/sync'
 sync = ->
 
-  # Connecting to 'default' database and clearing it before starting the sample.
+  # Connecting to 'default' database and clearing it before starting.
   db = Driver.db()
   db.clear()
 
@@ -25,7 +25,7 @@ sync = ->
   units.save name: 'Tassadar'
 
   # Querying first and all documents matching criteria (there's
-  # also `next` method for advanced access).
+  # also `next` method for advanced usage).
   assert units.first(name: 'Zeratul').name, 'Zeratul'
   list = units.all(name: 'Zeratul')
   assert (_(list).map (obj) -> obj.name), ['Zeratul']

@@ -1,7 +1,6 @@
 # [Model](model.html) supports two modes - asynchronous and synchronous.
 #
-# - Asynchronous mode - it's just usual Node.JS mode, with plain JavaScript and Callbacks,
-# without any extra dependency.
+# - Asynchronous mode - it's just usual Node.JS mode, with plain JavaScript and Callbacks.
 # - Synchronous mode is optional and experimental it also depends on the `fibers` library.
 #
 # In this example we'll discower why You may need synchronous mode and how to use it.
@@ -24,7 +23,7 @@
 #
 # ### Enabling synchronous mode.
 #
-# As I said before sync mode is optional You need to install `fibers` manually `npm install fibers`.
+# As I said before sync mode is optional and You need to install `fibers` manually `npm install fibers`.
 
 # Requiring Model.
 Model = require 'mongo-model'
