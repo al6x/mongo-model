@@ -7,11 +7,13 @@
 # - Full support for [composite / embedded objects](composite.html) (with [validations](validations.html),
 # [callbacks](callbacks.html), ...).
 # - [Scopes](queries.html) and handy helpers for [querying](queries.html).
-# - Support for [multiple](database.html) simultaneous connections and databases.
-# - Support for [associations](associations.html).
+# - [Multiple](database.html) simultaneous connections and databases.
+# - [Associations](associations.html).
 # - Same API for [Driver](driver.html) and Model.
 # - Optional support for [synchronous](synchronous.html) mode (with Fibers).
 # - Small codebase.
+#
+# Short [presentation](presentations/introduction/index.html).
 #
 # ### Installation
 #

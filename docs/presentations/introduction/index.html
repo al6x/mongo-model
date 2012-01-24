@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Mongo Model</title>
+
+  <meta name="description" content="Mongo Model is Domain Model for MongoDB and Node.JS">
+  <meta name="author" content="Alexey Petrushin" />
+
+  <link href="impressjs/impress.css" rel="stylesheet"/>
+  <link href="style.css" rel="stylesheet"/>
+</head>
+<body>
+<div id="impress" class="impress-not-supported">
+
+<div id="main" class="title step slide">
+  <h1>Mongo Model</h1>
+  <p class='small'>Domain Model for MongoDB and Node.JS</p>
+</div>
+
+<!-- <div id='features', class="step slide">
+  <h1>Features</h1>
+  <ul>
+    <li>Models are JS Objects</li>
+    <li>Dynamic, schema-less</li>
+    <li>Callbacks and Validations</li>
+    <li>Embedded and Associations</li>
+    <li>Queries and Scopes</li>
+    <li>Synchronous (with Fibers)</li>
+  </ul>
+</div> -->
+
+<div class="step slide">
+  <p><b>CoffeeScript</b> and <b>Fibers</b> are optional.</p>
+  <br/>
+  <p>You can use Model with plain old <b>JavaScript</b> and <b>Callbacks</b>.</p>
+</div>
+
+<div class="step slide">
+  <h1>Defining Model</h1>
+  <pre class='code prettyprint'>
+class global.Post extends Model
+  @collection 'posts'
+  @embedded   'comments'
+
+class global.Comment extends Model
+  </pre>
+</div>
+
+<div class='title step slide'>
+  <h1>CRUD</h1>
+  <p class='small'>Dynamic schema, flexible queries.</p>
+</div>
+
+<div class="step slide">
+  <h1><b>C</b>RUD</h1>
+  <pre class='code prettyprint'>
+post = new Post
+  text: 'Zerg on Tarsonis!'
+
+post.comments.push new Comment
+  text: "Can't believe it!"
+
+post.save()
+  </pre>
+</div>
+
+<div class="step slide">
+  <h1>C<b>R</b>UD</h1>
+  <pre class='code prettyprint'>
+Post.first(status: 'published')
+
+Post.
+  find(status: 'published').
+  sort(createdAt: -1).
+  limit(25).
+  all()
+  </pre>
+</div>
+
+<div class="step slide">
+  <h1>C<b>R</b>UD with <b>Scopes</b></h1>
+  <pre class='code prettyprint'>
+class global.Post extends Model
+  @latest: ->
+    @find(status: 'published').
+    @sort(createdAt: -1).
+    @limit(25)
+
+Post.latest().paginate(params).all()
+  </pre>
+</div>
+
+<div class="step slide">
+  <h1>CR<b>U</b>D</h1>
+  <pre class='code prettyprint'>
+post = Post.first()
+
+post.comments.push new Comment
+  text: 'Sad news ...'
+
+post.save()
+  </pre>
+</div>
+
+<div class="step slide">
+  <h1>CR<b>U</b>D with <b>Modifiers</b></h1>
+  <pre class='code prettyprint'>
+post = Post.first()
+post.update $set:
+  title: 'Striking news!'
+
+Post.update {_id: postId}, $set:
+  title: 'Striking news!'
+  </pre>
+</div>
+
+<div class="step slide">
+  <h1>CRU<b>D</b></h1>
+  <pre class='code prettyprint'>
+post.delete()
+
+Post.delete status: 'draft'
+  </pre>
+</div>
+
+<div class='title step slide'>
+  <h1>Associations</h1>
+  <p class='small'>
+    1-to-1, 1-to-N, N-to-M
+  </p>
+</div>
+
+<div class="step slide">
+  <h1>Associations</h1>
+  <pre class='code prettyprint'>
+class global.Post extends Model
+  comments: ->
+    Comment.find postId: @_id
+
+class global.Comment extends Model
+  post: ->
+    Post.first _id: @postId
+  </pre>
+</div>
+
+<div class="step slide">
+  <h1>Associations <b>C</b>RUD</h1>
+  <pre class='code prettyprint'>
+post = Post.create
+  text: 'Zerg found on Tarsonis!'
+
+post.comments().create
+  text: "Can't believe it!"
+  </pre>
+</div>
+
+<div class="step slide">
+  <h1>Associations C<b>R</b>UD</h1>
+  <pre class='code prettyprint'>
+post = Post.first()
+
+post.comments().limit(25).all()
+post.comments().count()
+  </pre>
+</div>
+
+<div class='title step slide'>
+  <h1>Callbacks</h1>
+  <p class='small'>
+    before / after of create, update, validate and delete.
+  </p>
+</div>
+
+<div class="step slide">
+  <h1>Callbacks</h1>
+  <pre class='code prettyprint'>
+class global.Post extends Model
+  @after 'delete', (callback) ->
+    @comments().delete callback
+  </pre>
+</div>
+
+<div class="step slide title">
+  <h1>Validations</h1>
+  <p class='small'>
+    Use <b>errors</b> to store messages, <b>valid</b> to check and <b>validate</b> to define rules.
+  </p>
+</div>
+
+<div class="step slide">
+  <h1>Validations</h1>
+  <pre class='code prettyprint'>
+class global.Post extends Model
+  @validate (callback) ->
+    unless @text
+      @errors.add
+        text: "can't be empty"
+    callback()
+  </pre>
+</div>
+
+<div class="step slide">
+  <p>Callbacks and Validations also works on <b>Embedded Models</b></p>
+  <br/>
+  <p>If You declare attribute with <b>embedded</b> keyword</p>
+</div>
+
+<div class='title step slide'>
+  <h1>Try it</h1>
+  <p class='small'>
+    Use
+    <a href="http://alexeypetrushin.github.com/mongo-model" target="_blank">
+      executable documentation</a>
+    to see it in action.
+  </p>
+</div>
+
+<!-- <div class="step slide title">
+  <h1>Specs</h1>
+  <p class='small'>
+    <a href="http://alexeypetrushin.github.com/mary" target="_blank">Dr. Mary</a>
+    can help with it.
+  </p>
+</div>
+
+<div class="step slide">
+  <h1>Billy<h1>
+  <pre class='code prettyprint'>
+it.sync "should be fine with Mary", ->
+  Patient.create
+    name        : 'Billy'
+    temperature : 36
+
+  billy = Patient.first()
+  billy.temperature.should be: 36
+  </pre>
+</div> -->
+
+<div id='about' class="step slide">
+  <h1> Thanks for watching</h1>
+  <br/>
+  <p>Mongo Model</p>
+  <p class='very-small'>
+    <a href="https://github.com/alexeypetrushin/mongo-model" target="_blank">
+      https://github.com/alexeypetrushin/mongo-model</a>
+    <br/>
+    <a href="http://alexeypetrushin.github.com/mongo-model" target="_blank">
+      Documentation</a>
+    <br/>
+    <a href="https://github.com/alexeypetrushin/mongo-model/tree/master/examples" target="_blank">
+      Examples</a>
+  </p>
+  <p>Me</p>
+  <p class='very-small'>
+    Alexey Petrushin
+    <br/>
+    alexey.petrushin at gmail
+    <br/>
+    <a href='http://petrush.in' target="_blank">http://petrush.in</a>
+  </p>
+</div>
+
+    <!-- Support -->
+
+    <div class="fallback-message">
+      <p>Your browser <b>doesn't support the features required</b> by impress.js,
+        so you are presented with a simplified version of this presentation.</p>
+      <p>For the best experience please use the latest <b>Chrome</b> or <b>Safari</b> browser.
+        Firefox 10 (to be released soon) will also handle it.</p>
+    </div>
+    </div>
+
+    <div class="hint">
+      <p>Use a spacebar or arrow keys to navigate</p>
+    </div>
+
+    <!-- Post-processing slides. -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="js.js"></script>
+
+    <!-- impress.js -->
+    <script src="impressjs/impress.js"></script>
+
+    <!-- Code highlighting -->
+    <link href="prettify/prettify.css" rel="stylesheet"/>
+    <script src="prettify/prettify.js"></script>
+    <script>
+      prettyPrint()
+    </script>
+
+    <!-- GitHub Ribbon -->
+    <a href="https://github.com/alexeypetrushin/mongo-model"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://a248.e.akamai.net/assets.github.com/img/71eeaab9d563c2b3c590319b398dd35683265e85/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub"></a>
+  </body>
+</html>

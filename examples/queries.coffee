@@ -25,15 +25,6 @@ sync = ->
   list = Unit.all(name: 'Zeratul')
   assert (_(list).map (obj) -> obj.name), ['Zeratul']
 
-  # # Simple dynamic finders.
-  # p Unit.by_name('Zeratul')                            # => Zeratul
-  # p Unit.first_by_name('Zeratul')                      # => Zeratul
-  # p Unit.all_by_name('Zeratul')                        # => [Zeratul]
-  #
-  # # Bang version, will raise error if nothing found.
-  # p Unit.first!(name: 'Zeratul')                       # => Zeratul
-  # p Unit.by_name!('Zeratul')                           # => Zeratul
-
   # Counting and checking for existence.
   assert Unit.count(), 3
   assert Unit.count(race: 'Protoss'), 2
