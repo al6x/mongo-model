@@ -1,4 +1,4 @@
-# Composite [Model](model.html).
+# Embedded Models.
 #
 # Models are just ordinary JavaScript Objects, so You can combine and mix it as You wish.
 # The only differences between Main and Embedded Models are:
@@ -69,17 +69,17 @@ global.assert = (args...) -> require('assert').deepEqual args...
 
 # ### A little of Theory
 #
-# I believe good support for Composite Models is very important - because Complex Documents is one of
-# the strongest and most important features of MongoDB. Composite Documents for MongoDB is the same
+# I believe good support for Embedded Models is very important - because Complex Documents is one of
+# the strongest and most important features of MongoDB. Embedded Documents for MongoDB is the same
 # as Relations are for Relational Database.
 #
 # This [Model](model.html) designed and optimized for working with such complex (also multi-nested) Models.
 #
-# Composite Models by itself is very complicated stuff, so, in order to not to complicate it any further -
+# Embedded Models by itself is very complicated stuff, so, in order to not to complicate it any further -
 # I tried to keep API as simple as possible.
 #
 # There's no special Proxies, Collections or other stuff, only plain JS Objects, Arrays and Hashes.
 # So, You can safely combine this simple build blocks as You wish and be confident that all
 # this will not blow up at some point of complexity.
 #
-# In this example we covered how to create and use Composite Models (Models with Embedded Models).
+# In this example we covered how to create and use Embedded Models (Models with Embedded Models).

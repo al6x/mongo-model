@@ -1,16 +1,16 @@
 # Modelling Associations for [Model](model.html).
 #
 # MongoDB is Document Database, and unlike Relational Database its key
-# feature is Composite Documents. It also support Associations but
+# feature is Embedded Documents. It also support Associations but
 # there are some limitations.
 #
-# So, with MongoDB You usually use Composite Documents a lot and Associations not so much.
+# So, with MongoDB You usually use Embedded Documents a lot and Associations not so much.
 #
 # According to this Mongo Model provides You with advanced tools
-# for [Composite Models](composite.html), and basic only for modelling Associations.
+# for [Embedded Models](embedded.html), and basic only for modelling Associations.
 #
 # In this example we'll create simple Blog Application and see how to associate
-# Comments with the Post using one-to-many association (take a look at the [composite](composite.html) example
+# Comments with the Post using one-to-many association (take a look at the [embedded](embedded.html) example
 # to see how to embed Comments into Post).
 _     = require 'underscore'
 Model = require 'mongo-model'
@@ -143,5 +143,5 @@ global.assert = (args...) -> require('assert').deepEqual args...
 # M-to-N - use array of ids to do it).
 #
 # Also, remember that MongoDB is Document Database, not Relational.
-# If You want to get most of it – use Composite Documents whenever possible,
+# If You want to get most of it – use Embedded Documents whenever possible,
 # avoid Associations and use it only if You really need it.

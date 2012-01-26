@@ -22,7 +22,7 @@ sync = ->
     @collection 'posts'
 
     @validate (callback) ->
-      @errors().add 'text', "can't be empty" unless @text
+      @errors().add text: "can't be empty" unless @text
       callback()
 
   # Creating post, it can't be saved because its text is empty and it's invalid.
@@ -57,13 +57,13 @@ sync = ->
       super args...
 
     @validate (callback) ->
-      @errors().add 'text', "can't be empty" unless @text
+      @errors().add text: "can't be empty" unless @text
       callback()
 
   # Defining Comment.
   class global.Comment extends Model
     @validate (callback) ->
-      @errors().add 'text', "can't be empty" unless @text
+      @errors().add text: "can't be empty" unless @text
       callback()
 
   # Creating valid Post.

@@ -1,27 +1,68 @@
 # Domain Model for MongoDB (Node.JS).
 #
-# - Models are (almost) pure JavaScript Objects.
-# - Minimum extra abstractions, trying to keep things as close to the semantic of MongoDB as possible.
-# - [Schema-less, dynamic](basics.html) (with ability to specify types for [mass-assignment](assignment.html)).
-# - Models can be saved to [any collection](database.html), dynamically.
-# - Full support for [composite / embedded objects](composite.html) (with [validations](validations.html),
-# [callbacks](callbacks.html), ...).
-# - [Scopes](queries.html) and handy helpers for [querying](queries.html).
-# - [Multiple](database.html) simultaneous connections and databases.
-# - [Associations](associations.html).
-# - Same API for [Driver](driver.html) and Model.
-# - Optional support for [synchronous](synchronous.html) mode (with Fibers).
-# - Small codebase.
+# [Slides](presentations/introduction/index.html) (with [video](http://www.youtube.com/watch?v=HB2Bkcgdjms)).
+
+# ### Features
+
+# [Models](basics.html) are JavaScript Objects.
+class global.Post extends Model
+  @collection 'posts'
+
+Post.create text: 'Zerg on Tarsonis!'
+
 #
-# Short [presentation](presentations/introduction/index.html).
+
+# Simple and flexible [Queries and Scopes](queries.html).
+Post.first status: 'published'
+Post.find(status: 'published').sort(createdAt: -1).
+  limit(25).all()
+
 #
+
+# [Embedded Models](embedded.html) with [validations](validations.html),
+# and [callbacks](callbacks.html).
+post.comments = []
+
+comment = new Comment text: "Can't believe it!"
+post.comments.push comment
+
+post.save()
+
+#
+
+# [Associations](associations.html), 1 to 1, 1 to N, N to M.
+post.comments().create text: "Can't believe it!"
+
+#
+
+# [Callbacks](callback.html) and [Validations](validations.html)
+class global.Post extends Model
+  @after 'delete', (callback) ->
+    @comments().delete callback
+
+#
+
+# Same API for [Driver](driver.html) and Model.
+posts = db.collection 'posts'
+posts.find(status: 'published').sort(createdAt: -1).
+  limit(25).all()
+
+#
+
+# Use it with plain JavaScript and Callbacks or in synchronous mode with Fibers.
+Post.first({status: 'published'}, function(err, post){
+  console.log(post)
+})
+
+console.log Post.first(status: 'published')
+
 # ### Installation
 #
 #     npm install mongo-model
 #
 # ### Examples
 #
-# [Basics](basics.html), [Composite and Embedded Models](composite.html), [Queries and Scopes](queries.html),
+# [Basics](basics.html), [Embedded Models](embedded.html), [Queries and Scopes](queries.html),
 # [Validations](validations.html), [Callbacks](callbacks.html), [Associations](associations.html),
 # [Attribute Assignment & Mass Assignment](assignment.html), [Upsersts and Modifiers](modifiers.html),
 # [Working with Connnections and Databases](database.html), [Optional Synchronous Mode](synchronous.html).
@@ -35,9 +76,9 @@
 # Note: Model itself doesn't depends on Fibers or CoffeeScript, **You can use it with plain old JavaScript and
 # asynchronous callbacks**.
 #
-# So, You need to install Fibers & CoffeeScript to run examples:
+# But, You need to install Fibers, Underscore & CoffeeScript to run examples:
 #
-#     npm install coffee-script fibers
+#     npm install coffee-script fibers underscore
 #
 # Next clone project, go to `docs/samples` folder and run any example (I recommend You to start
 # with [basics](basics.html)):

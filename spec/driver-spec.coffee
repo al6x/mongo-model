@@ -10,6 +10,7 @@ describe "Driver Db", ->
 
   it.sync "should list collection names", ->
     $db.collection('alpha').create a: 'b'
+    $db.collectionNames()
     $db.collectionNames().should include: 'alpha'
 
   it.sync "should clear database", ->

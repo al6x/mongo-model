@@ -80,7 +80,7 @@ describe "Model Validation", ->
 
     it.sync "should support validation callbacks", ->
       Unit.validate (callback) ->
-        @errors().add 'name', 'is invalid' unless /^[a-z]+$/i.test @name
+        @errors().add name: 'is invalid' unless /^[a-z]+$/i.test @name
         callback null
 
       unit = new Unit(name: '43')
@@ -93,7 +93,7 @@ describe "Model Validation", ->
 
     it.sync "should not save model with errors", ->
       Unit.validate (callback) ->
-        @errors().add 'name', 'is invalid' unless /^[a-z]+$/i.test @name
+        @errors().add name: 'is invalid' unless /^[a-z]+$/i.test @name
         callback null
 
       unit = new Unit(name: '43')
@@ -106,7 +106,7 @@ describe "Model Validation", ->
 
     it.sync "should clear errors before validation", ->
       Unit.validate (callback) ->
-        @errors().add 'name', 'is invalid' unless /^[a-z]+$/i.test @name
+        @errors().add name: 'is invalid' unless /^[a-z]+$/i.test @name
         callback null
 
       unit = new Unit(name: '43')

@@ -35,7 +35,7 @@ exports.methods =
         return callback err if err
         valid = _.isEmpty(that.errors())
 
-        # Validating embeded models.
+        # Validating embedded models.
         counter = 0
         check = ->
           if counter < embeddedModels.length
