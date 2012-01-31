@@ -11,7 +11,7 @@ describe "Model Miscellaneous", ->
 
   it 'should have cache', ->
     u = new Unit()
-    u._cache.should == {}
+    u.cache().should.eql {}
 
   it.sync "should create timestamps", ->
     Unit.timestamps()
@@ -20,25 +20,25 @@ describe "Model Miscellaneous", ->
     unit.save()
 
     unit = Unit.first()
-    unit.createdAt.shouldNot be: null
-    unit.updatedAt.shouldNot be: null
+    _(unit.createdAt).should.exist
+    _(unit.updatedAt).should.exist
 
   describe 'Original', ->
     it.sync "should provide original", ->
       unit = new Unit name: 'Zeratul'
-      _(unit._original()).should be: null
+      _(unit._original()).should.not.exist
       unit.save()
       unit.name = 'Tassadar'
-      unit._original().name.should be: 'Zeratul'
+      unit._original().name.should.eql 'Zeratul'
 
       unit.save()
-      unit._original().name.should be: 'Tassadar'
+      unit._original().name.should.eql 'Tassadar'
 
       unit = Unit.first()
       unit.name = 'Fenix'
-      unit._original().name.should be: 'Tassadar'
+      unit._original().name.should.eql 'Tassadar'
 
-    # # Not implemented.
+    # # Discarded.
     # it.sync "should use identity map if provided", ->
     #   unit = new Unit name: 'Zeratul'
     #   _(unit._original()).should be: null

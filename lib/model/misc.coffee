@@ -5,7 +5,7 @@ Model  = require './model'
 exports.methods =
   eq: (other) -> _.isEqual @, other
 
-  _cache: -> @_cache ||= {}
+  cache: -> @_cache ||= {}
 
   # Use this as a way to get original unchanged model after You change model attributes.
   _setOriginal: (doc) ->

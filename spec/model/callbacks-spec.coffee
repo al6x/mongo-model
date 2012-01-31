@@ -31,8 +31,8 @@ describe 'Model Callbacks', ->
       unit = new Tmp.Unit()
       unit.items = [item]
 
-      unit.save().should be: true
-      messages.should be: [
+      unit.save().should.be.true
+      messages.should.eql [
         'before validate'
         'embedded, before validate'
         'after save'
@@ -62,8 +62,8 @@ describe 'Model Callbacks', ->
         callback null, true
 
     it.sync 'should trigger create callbacks', ->
-      unit.save().should be: true
-      messages.should be: [
+      unit.save().should.be.true
+      messages.should.eql [
         'before save',
         'before save (child)',
         'before create',
@@ -78,10 +78,10 @@ describe 'Model Callbacks', ->
         'after save (child)' ]
 
     it.sync 'should trigger update callbacks', ->
-      unit.save().should be: true
+      unit.save().should.be.true
       messages = []
-      unit.save().should be: true
-      messages.should be: [
+      unit.save().should.be.true
+      messages.should.eql [
         'before save',
         'before save (child)',
         'before update',
@@ -96,10 +96,10 @@ describe 'Model Callbacks', ->
         'after save (child)' ]
 
     it.sync 'should trigger delete callbacks', ->
-      unit.save().should be: true
+      unit.save().should.be.true
       messages = []
-      unit.delete().should be: true
-      messages.should be: [
+      unit.delete().should.be.true
+      messages.should.eql [
         'before delete',
         'before delete (child)',
         'before validate',
@@ -110,10 +110,10 @@ describe 'Model Callbacks', ->
         'after delete (child)' ]
 
     it.sync 'should be able skip callbacks', ->
-      unit.save(callbacks: false).should be: true
-      unit.save(callbacks: false).should be: true
-      unit.delete(callbacks: false).should be: true
-      messages.should be: []
+      unit.save(callbacks: false).should.be.true
+      unit.save(callbacks: false).should.be.true
+      unit.delete(callbacks: false).should.be.true
+      messages.should.eql []
 
     it.sync 'should be able interrupt CRUD', ->
       delete unit.runCallbacks
@@ -122,12 +122,12 @@ describe 'Model Callbacks', ->
       Unit.before 'create', (callback) ->
         callback null, false
 
-      unit.save().should be: false
-      Unit.count().should be: 0
+      unit.save().should.be.false
+      Unit.count().should.eql 0
 
     # # Discarded.
     # it.sync "should trigger after build callback after building the model", ->
-    #   unit.save().should be: true
+    #   unit.save().should.be.true
     #
     #   MainObject.after_instantiate do |instance|
     #     instance.should_receive(:after_build)

@@ -50,9 +50,8 @@ posts.find(status: 'published').sort(createdAt: -1).
 #
 
 # Use it with plain JavaScript and Callbacks or in [synchronous mode](synchronous.html) with Fibers.
-Post.first({status: 'published'}, function(err, post){
-  console.log(post)
-})
+Post.first {status: 'published'}, (err, post) ->
+  console.log post
 
 console.log Post.first(status: 'published')
 

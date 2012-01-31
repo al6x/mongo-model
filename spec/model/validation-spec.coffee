@@ -21,54 +21,54 @@ describe "Model Validation", ->
     it.sync 'should not save, update or delete invalid objects', ->
       # Create.
       unit.valid = (args..., callback) -> callback null, false
-      unit.save().should be: false
+      unit.save().should.be.false
 
       unit.valid = (args..., callback) -> callback null, true
-      unit.save().should be: true
+      unit.save().should.be.true
 
       # Update.
       unit.valid = (args..., callback) -> callback null, false
-      unit.save().should be: false
+      unit.save().should.be.false
 
       unit.valid = (args..., callback) -> callback null, true
-      unit.save().should be: true
+      unit.save().should.be.true
 
       # Delete.
       unit.valid = (args..., callback) -> callback null, false
-      unit.delete().should be: false
+      unit.delete().should.be.false
 
       unit.valid = (args..., callback) -> callback null, true
-      unit.delete().should be: true
+      unit.delete().should.be.true
 
     it.sync 'should not save, update or delete invalid embedded objects', ->
       # Create.
       item.valid = (args..., callback) -> callback null, false
-      unit.save().should be: false
+      unit.save().should.be.false
 
       item.valid = (args..., callback) -> callback null, true
-      unit.save().should be: true
+      unit.save().should.be.true
 
       # Update.
       item.valid = (args..., callback) -> callback null, false
-      unit.save().should be: false
+      unit.save().should.be.false
 
       item.valid = (args..., callback) -> callback null, true
-      unit.save().should be: true
+      unit.save().should.be.true
 
       # Delete.
       item.valid = (args..., callback) -> callback null, false
-      unit.delete().should be: false
+      unit.delete().should.be.false
 
       item.valid = (args..., callback) -> callback null, true
-      unit.delete().should be: true
+      unit.delete().should.be.true
 
     it.sync "should be able to skip validation", ->
       unit.valid = (args..., callback) -> callback null, false
-      unit.save(validate: false).should be: true
+      unit.save(validate: false).should.be.true
 
       unit.valid = (args..., callback) -> callback null, true
       item.valid = (args..., callback) -> callback null, false
-      unit.save(validate: false).should be: true
+      unit.save(validate: false).should.be.true
 
 
   describe "Callbacks", ->
@@ -84,12 +84,12 @@ describe "Model Validation", ->
         callback null
 
       unit = new Unit(name: '43')
-      unit.valid().should be: false
-      unit.errors().should be: {name: ['is invalid']}
+      unit.valid().should.be.false
+      unit.errors().should.eql {name: ['is invalid']}
 
       unit = new Unit(name: 'Zeratul')
-      unit.valid().should be: true
-      unit.errors().should be: {}
+      unit.valid().should.be.true
+      unit.errors().should.eql {}
 
     it.sync "should not save model with errors", ->
       Unit.validate (callback) ->
@@ -97,12 +97,12 @@ describe "Model Validation", ->
         callback null
 
       unit = new Unit(name: '43')
-      unit.valid().should be: false
-      unit.errors().should be: {name: ['is invalid']}
+      unit.valid().should.be.false
+      unit.errors().should.eql {name: ['is invalid']}
 
       unit = new Unit(name: 'Zeratul')
-      unit.valid().should be: true
-      unit.errors().should be: {}
+      unit.valid().should.be.true
+      unit.errors().should.eql {}
 
     it.sync "should clear errors before validation", ->
       Unit.validate (callback) ->
@@ -110,9 +110,9 @@ describe "Model Validation", ->
         callback null
 
       unit = new Unit(name: '43')
-      unit.valid().should be: false
+      unit.valid().should.be.false
       unit.name = 'Zeratul'
-      unit.valid().should be: true
+      unit.valid().should.be.true
 
   describe "Special Database Exceptions", ->
     Unit = null
@@ -128,5 +128,5 @@ describe "Model Validation", ->
       Unit.create name: 'Zeratul'
 
       unit = new Unit name: 'Zeratul'
-      unit.save().should be: false
-      unit.errors().should be: {base: ["not unique value"]}
+      unit.save().should.be.false
+      unit.errors().should.eql {base: ["not unique value"]}

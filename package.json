@@ -10,7 +10,8 @@
   "devDependencies": {
     "fibers"        : ">=0.6",
     "coffee-script" : ">=1.2",
-    "mary"          : ">=0.1"
+    "mocha"         : ">=0.10",
+    "should"        : ">=0.5"
   },
   "description"  : "Model for MongoDB",
   "keywords"     : ["NoSQL", "MongoDB", "ODM", "ORM", "Model", "Business Logic"],

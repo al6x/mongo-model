@@ -48,11 +48,11 @@ sync = ->
     # Adding method allowing to assign Post to Comment.
     setPost: (post) ->
       @postId = post._id
-      @_cache().post = post
+      @cache().post = post
 
     # Retrieving the Post this Comment belongs to.
     post: ->
-      @_cache().post ||= Post.first _id: @postId
+      @cache().post ||= Post.first _id: @postId
 
     inspect: -> "{Comment: #{@text}}"
 

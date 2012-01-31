@@ -11,10 +11,10 @@ task 'clear', 'Clear compiled JavaScript', ->
   execute "find ./lib -name '*.js' | xargs rm -f"
 
 task 'spec', 'Run Specs', ->
-  execute 'jasmine-node --coffee spec'
+  execute 'find ./spec -name "*spec.coffee" | xargs mocha'
 
 task 'docs-spec', 'Run Specs for Documentation', ->
-  execute 'jasmine-node --coffee examples'
+  execute 'find ./examples -name "*spec.coffee" | xargs mocha'
 
 task 'generate-docs', 'Generate Documentation', ->
   execute 'docco examples/*.coffee'

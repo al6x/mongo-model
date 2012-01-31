@@ -2,28 +2,28 @@ mongo = require './driver'
 
 mongo._db = mongo.db
 
+global.$db = null
+
 # Connecting to Mongo and cleaning database after each spec.
 global.withMongo = (options = {}) ->
-  alias = options.alias  || '$db'
-
   # Stub.
   mongo.db = (als, callback) ->
-    callback null, global[alias]
+    callback null, global.$db
 
   # Connecting to Mongo.
-  beforeEach ->
-    global[alias] = null
+  beforeEach (done) ->
+    global.$db = null
     mongo.server (err, server) ->
+      return done err if err
       server.db 'test', (err, db) ->
-        throw err if err
+        return done err if err
         db.clear (err) ->
-          throw err if err
-          global[alias] = db
-
-    waitsFor( (-> !!global[alias]), "can't connect to Mongo server!", 1000)
+          return done err if err
+          global.$db = db
+          done()
 
   # Closing Mongo connection.
   afterEach ->
-    if global[alias]
-      global[alias].close()
-      global[alias] = null
+    if global.$db
+      global.$db.close()
+      global.$db = null

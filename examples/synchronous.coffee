@@ -69,7 +69,6 @@ Fiber(->
 ).run()
 
 # All methods (well, almost all) of [Driver](driver.html) and [Model](model.html) support both sync and async style.
-# It's also very handy to use sync style for writing specs, take a look at the specs of Model
-# with [Mary](http://alexeypetrushin.github.com/mary) to see how it looks.
+# It's also very handy to use sync style for writing specs, take a look at the `spec/helper.coffe` to see how it works.
 
 # In this sample we covered how to use synchronous mode with [Driver](driver.html) and [Model](model.html).

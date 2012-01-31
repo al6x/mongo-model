@@ -20,6 +20,6 @@ describe 'Model Associations', ->
     post2 = Tmp.Post.create text: 'Post 2'
     comment3 = post2.comments().create text: 'Comment 3'
 
-    post1.comments().count().should be: 2
+    post1.comments().count().should.eql 2
     list = post1.comments().all()
-    list.map((o) -> o.text).should be: ['Comment 2', 'Comment 1']
+    list.map((o) -> o.text).should.eql ['Comment 2', 'Comment 1']
