@@ -18,7 +18,7 @@ describe "Model Validation", ->
       item = new Item()
       unit.items = [item]
 
-    it.sync 'should not save, update or delete invalid objects', ->
+    itSync 'should not save, update or delete invalid objects', ->
       # Create.
       unit.valid = (args..., callback) -> callback null, false
       unit.save().should.be.false
@@ -40,7 +40,7 @@ describe "Model Validation", ->
       unit.valid = (args..., callback) -> callback null, true
       unit.delete().should.be.true
 
-    it.sync 'should not save, update or delete invalid embedded objects', ->
+    itSync 'should not save, update or delete invalid embedded objects', ->
       # Create.
       item.valid = (args..., callback) -> callback null, false
       unit.save().should.be.false
@@ -62,7 +62,7 @@ describe "Model Validation", ->
       item.valid = (args..., callback) -> callback null, true
       unit.delete().should.be.true
 
-    it.sync "should be able to skip validation", ->
+    itSync "should be able to skip validation", ->
       unit.valid = (args..., callback) -> callback null, false
       unit.save(validate: false).should.be.true
 
@@ -78,7 +78,7 @@ describe "Model Validation", ->
         @collection 'units'
       Unit = Tmp.Unit
 
-    it.sync "should support validation callbacks", ->
+    itSync "should support validation callbacks", ->
       Unit.validate (callback) ->
         @errors().add name: 'is invalid' unless /^[a-z]+$/i.test @name
         callback null
@@ -91,7 +91,7 @@ describe "Model Validation", ->
       unit.valid().should.be.true
       unit.errors().should.eql {}
 
-    it.sync "should not save model with errors", ->
+    itSync "should not save model with errors", ->
       Unit.validate (callback) ->
         @errors().add name: 'is invalid' unless /^[a-z]+$/i.test @name
         callback null
@@ -104,7 +104,7 @@ describe "Model Validation", ->
       unit.valid().should.be.true
       unit.errors().should.eql {}
 
-    it.sync "should clear errors before validation", ->
+    itSync "should clear errors before validation", ->
       Unit.validate (callback) ->
         @errors().add name: 'is invalid' unless /^[a-z]+$/i.test @name
         callback null
@@ -121,7 +121,7 @@ describe "Model Validation", ->
         @collection 'units'
       Unit = Tmp.Unit
 
-    it.sync "should convert unique index exception to errors", ->
+    itSync "should convert unique index exception to errors", ->
       units = $db.collection 'units'
       units.ensureIndex {name: 1}, unique: true
 

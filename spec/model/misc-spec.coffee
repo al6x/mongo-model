@@ -13,7 +13,7 @@ describe "Model Miscellaneous", ->
     u = new Unit()
     u.cache().should.eql {}
 
-  it.sync "should create timestamps", ->
+  itSync "should create timestamps", ->
     Unit.timestamps()
 
     unit = Unit.build name: 'Zeratul'
@@ -24,7 +24,7 @@ describe "Model Miscellaneous", ->
     _(unit.updatedAt).should.exist
 
   describe 'Original', ->
-    it.sync "should provide original", ->
+    itSync "should provide original", ->
       unit = new Unit name: 'Zeratul'
       _(unit._original()).should.not.exist
       unit.save()
@@ -39,7 +39,7 @@ describe "Model Miscellaneous", ->
       unit._original().name.should.eql 'Tassadar'
 
     # # Discarded.
-    # it.sync "should use identity map if provided", ->
+    # itSync "should use identity map if provided", ->
     #   unit = new Unit name: 'Zeratul'
     #   _(unit._original()).should be: null
     #   unit.save()

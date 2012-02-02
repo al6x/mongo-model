@@ -48,7 +48,7 @@ describe "Model Querying", ->
     beforeEach ->
       unit = Unit.build name: 'Zeratul'
 
-    it.sync 'should return first and all', ->
+    itSync 'should return first and all', ->
       _(Unit.first()).should.not.exist
       Unit.all().should.eql []
       unit.save()
@@ -57,7 +57,7 @@ describe "Model Querying", ->
       list.length.should.eql 1
       list[0].toHash().should.eql unit.toHash()
 
-    it.sync 'should be integrated with build, create and create!', ->
+    itSync 'should be integrated with build, create and create!', ->
       u = Unit.find(name: 'Zeratul').build age: 500
       [u.name, u.age].should.eql ['Zeratul', 500]
 
@@ -65,7 +65,7 @@ describe "Model Querying", ->
       u = Unit.first()
       [u.name, u.age].should.eql ['Zeratul', 500]
 
-    it.sync 'should check existence', ->
+    itSync 'should check existence', ->
       Unit.exists(name: 'Zeratul').should.be.false
       unit.exists().should.be.false
       unit.save()

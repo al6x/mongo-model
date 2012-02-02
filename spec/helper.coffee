@@ -26,7 +26,7 @@ Model.getClass = (name) ->
   Tmp[name] || (throw new Error "can't get '#{name}' class!")
 
 # Support for synchronous specs.
-it.sync = (desc, callback) ->
+global.itSync = (desc, callback) ->
   try
     require 'fibers'
   catch e

@@ -3,7 +3,7 @@ require '../helper'
 describe 'Model Associations', ->
   withMongo()
 
-  it.sync "should model associations", ->
+  itSync "should model associations", ->
     class Tmp.Post extends Model
       @collection 'posts'
 

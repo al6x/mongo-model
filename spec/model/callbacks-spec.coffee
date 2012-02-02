@@ -4,7 +4,7 @@ describe 'Model Callbacks', ->
   withMongo()
 
   describe "Basics", ->
-    it.sync "should works in common case", ->
+    itSync "should works in common case", ->
       messages = []
 
       class Tmp.Unit extends Model
@@ -61,7 +61,7 @@ describe 'Model Callbacks', ->
         messages.push "#{type} #{event} (child)"
         callback null, true
 
-    it.sync 'should trigger create callbacks', ->
+    itSync 'should trigger create callbacks', ->
       unit.save().should.be.true
       messages.should.eql [
         'before save',
@@ -77,7 +77,7 @@ describe 'Model Callbacks', ->
         'after save',
         'after save (child)' ]
 
-    it.sync 'should trigger update callbacks', ->
+    itSync 'should trigger update callbacks', ->
       unit.save().should.be.true
       messages = []
       unit.save().should.be.true
@@ -95,7 +95,7 @@ describe 'Model Callbacks', ->
         'after save',
         'after save (child)' ]
 
-    it.sync 'should trigger delete callbacks', ->
+    itSync 'should trigger delete callbacks', ->
       unit.save().should.be.true
       messages = []
       unit.delete().should.be.true
@@ -109,13 +109,13 @@ describe 'Model Callbacks', ->
         'after delete',
         'after delete (child)' ]
 
-    it.sync 'should be able skip callbacks', ->
+    itSync 'should be able skip callbacks', ->
       unit.save(callbacks: false).should.be.true
       unit.save(callbacks: false).should.be.true
       unit.delete(callbacks: false).should.be.true
       messages.should.eql []
 
-    it.sync 'should be able interrupt CRUD', ->
+    itSync 'should be able interrupt CRUD', ->
       delete unit.runCallbacks
       delete item.runCallbacks
 
@@ -126,7 +126,7 @@ describe 'Model Callbacks', ->
       Unit.count().should.eql 0
 
     # # Discarded.
-    # it.sync "should trigger after build callback after building the model", ->
+    # itSync "should trigger after build callback after building the model", ->
     #   unit.save().should.be.true
     #
     #   MainObject.after_instantiate do |instance|

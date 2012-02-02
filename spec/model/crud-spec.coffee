@@ -12,7 +12,7 @@ describe "Model CRUD", ->
       Unit = Tmp.Unit
       unit = new Unit(name: 'Zeratul', info: 'Dark Templar')
 
-    it.sync 'should perform CRUD with collection methods', ->
+    itSync 'should perform CRUD with collection methods', ->
       # Read.
       units = $db.collection 'units'
       units.count().should.eql 0
@@ -39,7 +39,7 @@ describe "Model CRUD", ->
       units.delete(unit).should.be.true
       units.count().should.eql 0
 
-    it.sync 'should perform CRUD with model methods', ->
+    itSync 'should perform CRUD with model methods', ->
       # Read.
       Unit.count().should.eql 0
       Unit.all().should.eql []
@@ -66,17 +66,17 @@ describe "Model CRUD", ->
       unit.delete().should.be.true
       Unit.count().should.eql 0
 
-    it.sync 'should be able to save model to another collection', ->
+    itSync 'should be able to save model to another collection', ->
       heroes = $db.collection 'heroes'
       unit.save collection: heroes
       heroes.first().toHash().should.eql unit.toHash()
 
-    it.sync 'should be able to save model to another collection defined as symbol', ->
+    itSync 'should be able to save model to another collection defined as symbol', ->
       heroes = $db.collection 'heroes'
       unit.save collection: 'heroes'
       heroes.first().toHash().should.eql unit.toHash()
 
-    it.sync 'should update with modifiers', ->
+    itSync 'should update with modifiers', ->
       unit.save()
 
       Unit.update {_id: unit._id}, $set: {name: 'Tassadar'}
@@ -87,27 +87,27 @@ describe "Model CRUD", ->
       unit.reload()
       unit.name.should.eql 'Fenix'
 
-    it.sync 'should build model', ->
+    itSync 'should build model', ->
       unit = Unit.build name: 'Zeratul'
       unit.name.should.eql 'Zeratul'
 
-    it.sync 'should create model', ->
+    itSync 'should create model', ->
       unit = Unit.create name: 'Zeratul'
       unit.toHash().should.eql {name : 'Zeratul', _id : unit._id, _class : 'Unit'}
       Unit.first().name.should.eql 'Zeratul'
 
-    it.sync 'should delete all models', ->
+    itSync 'should delete all models', ->
       Unit.create name: 'Zeratul'
       Unit.count().should.eql 1
       Unit.delete()
       Unit.count().should.eql 0
 
-    it.sync "should allow to read object as hash, without unmarshalling", ->
+    itSync "should allow to read object as hash, without unmarshalling", ->
       units = $db.collection 'units'
       units.save unit
       units.first({}, object: false).should.eql unit.toHash()
 
-    it.sync 'should reload model', ->
+    itSync 'should reload model', ->
       unit = Unit.create name: 'Zeratul'
       unit.name = 'Jim'
       unit.reload()
@@ -127,7 +127,7 @@ describe "Model CRUD", ->
         new Tmp.Item(name: 'Plasma shield')
       ]
 
-    it.sync 'should perform CRUD', ->
+    itSync 'should perform CRUD', ->
       # Create.
       units = $db.collection 'units'
       units.save unit
@@ -157,7 +157,7 @@ describe "Model CRUD", ->
       units.delete unit
       units.count().should.eql 0
 
-    it.sync "should have :_parent reference to the main object", ->
+    itSync "should have :_parent reference to the main object", ->
       units = $db.collection 'units'
       units.save unit
       unit = units.first()
