@@ -22,6 +22,7 @@ module.exports = class Driver.Cursor
   #   first selector, options, (err, doc) ->
   #
   first: (args..., callback) ->
+    throw new Error "callback required!" unless callback
     @all args..., (err, docs) ->
       unless err
         doc = docs[0] || null
@@ -36,6 +37,7 @@ module.exports = class Driver.Cursor
   #   all selector, options, (err, docs) ->
   #
   all: (args..., callback) ->
+    throw new Error "callback required!" unless callback
     if args.length > 0
       @find(args...).all callback
     else
@@ -78,6 +80,7 @@ module.exports = class Driver.Cursor
   #     cursor.next fun
   #
   next: (callback) ->
+    throw new Error "callback required!" unless callback
     if @nCursor
       @_next callback
     else
@@ -111,6 +114,7 @@ module.exports = class Driver.Cursor
     @nCursor = null
 
   count: (args..., callback) ->
+    throw new Error "callback required!" unless callback
     if args.length > 0
       @find(args...).count callback
     else
@@ -121,6 +125,7 @@ module.exports = class Driver.Cursor
   # CRUD.
 
   delete: (args..., callback) ->
+    throw new Error "callback required!" unless callback
     args2 = []
     if args[0] == true
       withCallbacks = true

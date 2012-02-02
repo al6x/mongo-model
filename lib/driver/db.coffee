@@ -9,12 +9,14 @@ module.exports = class Driver.Db
 
   collection: (name, options..., callback) ->
     options = options[0] || {}
+    throw new Error "callback required!" unless callback
     @nDb.collection name, options, (err, nCollection) =>
       collection = new Driver.Collection(nCollection) unless err
       callback err, collection
 
   open: (options..., callback) ->
     options = options[0] || {}
+    throw new Error "callback required!" unless callback
     @nDb.open (err, nDb) =>
       callback err, @
 
@@ -23,6 +25,7 @@ module.exports = class Driver.Db
 
   collectionNames: (options..., callback) ->
     options = options[0] || {}
+    throw new Error "callback required!" unless callback
     dbName = @name
     @nDb.collectionNames (err, names) ->
       names = _(names).map (obj) -> obj.name.replace("#{dbName}.", '') unless err
@@ -30,6 +33,7 @@ module.exports = class Driver.Db
 
   clear: (options..., callback) ->
     options = options[0] || {}
+    throw new Error "callback required!" unless callback
 
     @collectionNames options, (err, names) =>
       return callback err if err

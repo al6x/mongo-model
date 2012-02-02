@@ -9,12 +9,14 @@ module.exports = class Driver.Collection
 
   drop: (options..., callback) ->
     options = options[0] || {}
+    throw new Error "callback required!" unless callback
     @nCollection.drop (err, result) ->
       callback err, result
 
   # CRUD.
   create: (obj, options..., callback) ->
     options = options[0] || {}
+    throw new Error "callback required!" unless callback
     if obj and obj._model
       options = helper.merge collection: @, options
       obj.create options, callback
@@ -22,6 +24,7 @@ module.exports = class Driver.Collection
       @_create obj, options, callback
 
   update: (args..., callback) ->
+    throw new Error "callback required!" unless callback
     if args[0] and args[0]._model
       [obj, args...] = args
       options = args[0] || {}
@@ -33,6 +36,7 @@ module.exports = class Driver.Collection
       @_update selector, doc, options, callback
 
   delete: (args..., callback) ->
+    throw new Error "callback required!" unless callback
     if args[0] and args[0]._model
       # Delete model.
       [obj, args...] = args
@@ -68,6 +72,7 @@ module.exports = class Driver.Collection
       @_delete selector, options, callback
 
   save: (obj, options..., callback) ->
+    throw new Error "callback required!" unless callback
     options = options[0] || {}
     if obj and obj._model
       options = helper.merge collection: @, options
@@ -82,6 +87,7 @@ module.exports = class Driver.Collection
 
   _create: (doc, options, callback) ->
     options = helper.merge safe: Driver.safe, options
+    throw new Error "callback required!" unless callback
 
     # Generate custom id if specified.
     if !doc._id and Driver.generateId
@@ -97,6 +103,7 @@ module.exports = class Driver.Collection
 
   _update: (selector, doc, options, callback) ->
     options  = helper.merge safe: Driver.safe, options
+    throw new Error "callback required!" unless callback
 
     # Because :multi works only with $ operators, we need to check if it's applicable.
     options = if _(_(doc).keys()).any((k) -> /^\$/.test(k))
@@ -110,12 +117,14 @@ module.exports = class Driver.Collection
 
   _delete: (selector, options, callback) ->
     options = helper.merge safe: Driver.safe, options
+    throw new Error "callback required!" unless callback
 
     mongoOptions = helper.cleanOptions options
     @nCollection.remove selector, mongoOptions, (err, result) ->
       callback err, result
 
   _save: (doc, options, callback) ->
+    throw new Error "callback required!" unless callback
     if _id = doc._id
       @update {_id: _id}, doc, options, callback
     else
@@ -124,7 +133,9 @@ module.exports = class Driver.Collection
   # Querying.
 
   cursor: (args...) ->
-    collectionGetter = (cursor, callback) => callback null, @
+    collectionGetter = (cursor, callback) =>
+      throw new Error "callback required!" unless callback
+      callback null, @
     new Driver.Cursor collectionGetter, args...
 
   find: (args...) -> @cursor args...

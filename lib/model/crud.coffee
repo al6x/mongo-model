@@ -5,6 +5,7 @@ helper  = require '../helper'
 exports.methods =
   create: (options..., callback) ->
     options = options[0] || {}
+    throw new Error "callback required!" unless callback
 
     that = @
     embeddedModels = @_embeddedModels()
@@ -36,6 +37,7 @@ exports.methods =
 
   _update: (options..., callback) ->
     options = options[0] || {}
+    throw new Error "callback required!" unless callback
     @_requireSaved()
 
     that = @
@@ -63,7 +65,8 @@ exports.methods =
 
   delete: (options..., callback) ->
     options = options[0] || {}
-    @._requireSaved()
+    throw new Error "callback required!" unless callback
+    @_requireSaved()
 
     that = @
     embeddedModels = @_embeddedModels()
@@ -96,6 +99,7 @@ exports.methods =
   # Special methods.
 
   reload: (callback) ->
+    throw new Error "callback required!" unless callback
     @_requireSaved()
     @constructor.first _id: @_id, (err, obj) =>
       unless err
@@ -158,18 +162,21 @@ exports.classMethods =
     new @ attributes
 
   create: (attributes, args..., callback) ->
+    throw new Error "callback required!" unless callback
     obj = @build attributes
     obj.save args..., (err, result) ->
       return callback err if err
       callback err, obj, result
 
   update: (selector, doc, options..., callback) ->
+    throw new Error "callback required!" unless callback
     options = options[0] || {}
     @collection options, (err, collection) =>
       return callback err if err
       collection.update selector, doc, options, callback
 
   delete: (args..., callback) ->
+    throw new Error "callback required!" unless callback
     [selector, options] = [args[0] || {}, args[1] || {}]
     @collection options, (err, collection) =>
       collection.delete true, selector, options, callback

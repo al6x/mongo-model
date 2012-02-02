@@ -57,6 +57,7 @@ exports.classMethods =
       @_getCollection args...
 
   _getCollection: (options, callback) ->
+    throw new Error "callback required!" unless callback
     collection = options.collection || @_collection || (
       throw new Error "collection for '#{@name}' model not specified!")
 

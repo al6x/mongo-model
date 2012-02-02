@@ -3,6 +3,7 @@ helper = require '../helper'
 
 exports.methods =
   runCallbacks: (type, event, callback) ->
+    throw new Error "callback required!" unless callback
     meta = @constructor.callbacks()[event] || (throw new Error "unknown event '#{event}'!}")
     funcs = meta[type]
     counter = 0
@@ -36,9 +37,11 @@ exports.classMethods =
     @_callbacks
 
   before: (event, callback) ->
+    throw new Error "callback required!" unless callback
     meta = @callbacks(true)[event] || (throw new Error "unknown event '#{event}'!}")
     meta.before.push callback
 
   after: (event, callback) ->
+    throw new Error "callback required!" unless callback
     meta = @callbacks(true)[event] || (throw new Error "unknown event '#{event}'!}")
     meta.after.push callback

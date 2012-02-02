@@ -4,18 +4,21 @@ Model   = require './model'
 
 exports.methods =
   exists: (options..., callback) ->
+    throw new Error "callback required!" unless callback
     options = options[0] || {}
     @constructor.exists _id: @_id, options, callback
 
 exports.classMethods =
   cursor: (args...) ->
     collectionGetter = (cursor, callback) =>
+      throw new Error "callback required!" unless callback
       @collection cursor.options, callback
     new Model.Cursor @, collectionGetter, args...
 
   find: (args...) -> @cursor args...
 
   exists: (args..., callback) ->
+    throw new Error "callback required!" unless callback
     @count args..., (err, result) ->
       return callback err if err
       callback null, (result > 0)

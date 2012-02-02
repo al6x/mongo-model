@@ -6,6 +6,7 @@ exports.methods =
   errors: -> @_errors ||= new Model.Errors()
 
   valid: (args..., callback) ->
+    throw new Error "callback required!" unless callback
     [options, embeddedModelsCache] = args
     options ||= {}
     embeddedModels = embeddedModelsCache || @_embeddedModels()
@@ -54,6 +55,7 @@ exports.methods =
         check()
 
   runValidations: (callback) ->
+    throw new Error "callback required!" unless callback
     helper.clear @errors()
 
     validations = @constructor.validations()

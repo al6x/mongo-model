@@ -34,7 +34,7 @@ module.exports = Driver =
   server: (args...) ->
     callback = args.pop() if _.isFunction _(args).last()
     server = new Driver.Server(args...)
-    callback null, server if callback
+    process.nextTick -> callback null, server if callback
     server
 
   # Get database by alias, by using connection setting defined in options.
@@ -59,6 +59,7 @@ module.exports = Driver =
   #
   db: (dbAlias..., callback) ->
     dbAlias = dbAlias[0] || 'default'
+    throw new Error "callback required!" unless callback
 
     @dbCache ||= {}
     if db = @dbCache[dbAlias]
