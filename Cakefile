@@ -3,20 +3,20 @@ execute = (cmd) ->
   exec cmd, (err, stdout, stderr) ->
     console.log err if err
     console.log stdout + stderr
-    
+
 task 'spec', 'Run Specs', ->
   execute 'find ./spec -name "*spec.coffee" | xargs mocha'
 
 task 'compile', 'Compile CoffeeScript to JavaScript', ->
-  execute 'coffee --compile --output ./lib ./lib'  
+  execute 'coffee --compile --output ./lib ./lib'
 
 task 'clear', 'Clear compiled JavaScript', ->
-  execute "find ./lib -name '*.js' | xargs rm -f"  
+  execute "find ./lib -name '*.js' | xargs rm -f"
 
 # Docs.
 task 'compile-docs', 'Compile CoffeeScript examples to JavaScript', ->
   execute 'coffee --compile --output ./examples ./examples'
-  
+
 task 'clear-docs', 'Clear JavaScript versions of examples', ->
   execute "find ./examples -name '*.js' | xargs rm -f"
 
