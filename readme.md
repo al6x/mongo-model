@@ -12,4 +12,4 @@ Copyright (c) Alexey Petrushin, http://petrush.in, released under the MIT licens
 
 **Note:**
 Right now I'm looking for Node.JS job, my resume http://petrush.in/about/resume . Telecommute, 3 days / week, 2400$. 
-If You are in different timezone - it's not a problem, I'll shift my time to match Your time. alexey.petrushin (at) gmail.com
+If You are in different timezone - it's not a problem, I'll shift my time to match Yours. alexey.petrushin (at) gmail.com
