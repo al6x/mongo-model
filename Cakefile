@@ -1,11 +1,17 @@
 {exec} = require 'child_process'
 execute = (cmd) ->
+  # cmd = spawn cmd
+  # cmd.stdout.on 'data', (data) -> process.stdout.write data
+  # cmd.stderr.on 'data', (data) -> process.stderr.write data
+  # cmd.on 'exit', (code) ->
+  
   exec cmd, (err, stdout, stderr) ->
-    console.log err if err
-    console.log stdout + stderr
+    return console.log err if err
+    console.log stdout
 
 task 'spec', 'Run Specs', ->
-  execute 'find ./spec -name "*spec.coffee" | xargs mocha'
+  #  --reporter spec
+  execute 'find ./spec -name "*spec.coffee" | xargs mocha --compilers coffee:coffee-script'
 
 task 'compile', 'Compile CoffeeScript to JavaScript', ->
   execute 'coffee --compile --output ./lib ./lib'
