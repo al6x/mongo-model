@@ -117,13 +117,13 @@ describe "Configuration", ->
 describe "Integration with Model", ->
   withMongo()
 
-  # itSync "should save models", ->
-  #   model =
-  #     toHtml: -> {name: 'Probe'}
-  #     setId: (id) -> @id = id
-  #     getId: -> @id
-  #
-  #   units = @db.collection 'units'
-  #   units.save model
-  #   expect(model.id).to.be.a 'string'
-  #   expect(units.first(name: 'Probe')).to.be 0
+  itSync "should save models", ->
+    model =
+      toHtml: -> {name: 'Probe'}
+      setId: (id) -> @id = id
+      getId: -> @id
+  
+    units = @db.collection 'units'
+    units.save model
+    expect(model.id).to.be.a 'string'
+    expect(units.first(name: 'Probe')).to.be 0
