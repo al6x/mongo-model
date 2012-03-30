@@ -23,11 +23,11 @@ _(Driver).extend
       rand = Math.floor(Math.random() * @idSymbols.length)
       id += @idSymbols[rand]
     id
-    
+
   # Use `id` instead of `_id` in objects, selectors, queries.
   # Set it as `false` if You want to disable it.
   convertId: true
-  
+
   # Setting for pagination helper.
   perPage: 25
   maxPerPage: 100
@@ -43,7 +43,7 @@ _(Driver).extend
     server = new Driver.Server(args...)
     process.nextTick -> callback null, server if callback
     server
-    
+
   # Override to provide other behavior.
   fromHash: (doc) -> doc
 

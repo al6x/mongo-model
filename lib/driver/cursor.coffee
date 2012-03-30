@@ -20,9 +20,9 @@ class Driver.Cursor
   #   first selector, (err, doc) ->
   #   first selector, options, (err, doc) ->
   #
-  first: (args..., callback) ->    
+  first: (args..., callback) ->
     throw new Error "callback required!" unless callback
-    [selector, options] = [(args[0] || {}), (args[1] || {})] 
+    [selector, options] = [(args[0] || {}), (args[1] || {})]
     options = helper.merge options, limit: 1
     @all selector, options, (err, docs) ->
       doc = docs[0] || null unless err
@@ -84,7 +84,7 @@ class Driver.Cursor
     if @nCursor
       @_next callback
     else
-      @collection.connect callback, (nCollection) =>   
+      @collection.connect callback, (nCollection) =>
         options = helper.cleanOptions @options
         selector = helper.convertSelectorId @selector
         @nCursor ?= nCollection.find selector, options
@@ -98,12 +98,12 @@ class Driver.Cursor
         obj = if that.options.raw == true
           doc
         else
-          Driver.fromHash doc 
+          Driver.fromHash doc
         callback err, obj
       else
         that.nCursor = null
         callback err, null
-    
+
   # Usually cursor closed automatically.
   # The only exception - if You use `next' and stop somewhere in the middle
   # of returned result set, without retrieving all the remaining results. In this case
@@ -119,8 +119,8 @@ class Driver.Cursor
   count: (args..., callback) ->
     if args.length > 0
       @find(args...).count callback
-    else    
-      @collection.connect callback, (nCollection) =>        
+    else
+      @collection.connect callback, (nCollection) =>
         selector = helper.convertSelectorId @selector
         nCollection.count selector, callback
 
@@ -132,7 +132,7 @@ class Driver.Cursor
     else
       selector = helper.convertSelectorId @selector
       @collection.delete selector, @options, callback
-        
+
 
   # Helpers.
 

@@ -93,8 +93,8 @@ describe "Collection", ->
       units.create name: 'Probe',  status: 'alive'
       units.find(name: 'Probe').delete()
       expect(units.count(name: 'Probe')).to.be 0
-      
-describe "Configuration", ->  
+
+describe "Configuration", ->
   withMongo()
 
   oldOptions = null
@@ -113,16 +113,16 @@ describe "Configuration", ->
       expect(db.name).to.be 'test'
     finally
       db.close() if db
-      
+
 describe "Integration with Model", ->
   withMongo()
-    
+
   # itSync "should save models", ->
   #   model =
   #     toHtml: -> {name: 'Probe'}
   #     setId: (id) -> @id = id
   #     getId: -> @id
-  #     
+  #
   #   units = @db.collection 'units'
   #   units.save model
   #   expect(model.id).to.be.a 'string'

@@ -12,13 +12,13 @@ exports.Model = class Model
   set: (attributes = {}, options = {}) ->
     @[k] = v for own k, v of attributes
     @
-    
-  clear: -> delete @[k] for own k, v of @      
-    
+
+  clear: -> delete @[k] for own k, v of @
+
   valid: -> @errors.size() == 0
-  
+
   invalid: -> !@valid()
-    
+
 # Errors.
 
 definePropertyWithoutEnumeration = (obj, name, value) ->
@@ -30,9 +30,9 @@ definePropertyWithoutEnumeration = (obj, name, value) ->
 
 exports.Errors = class Errors
 
-definePropertyWithoutEnumeration Errors.prototype, 'clear', -> 
+definePropertyWithoutEnumeration Errors.prototype, 'clear', ->
   delete @[k] for own k, v of @
-  
+
 definePropertyWithoutEnumeration Errors.prototype, 'add', (args...) ->
   if args.length == 1
     @add attr, message for attr, message of args[0]

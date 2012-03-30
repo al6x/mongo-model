@@ -38,7 +38,7 @@ Model._cast = (v, type) ->
 _(Model.prototype).extend
 
   # Attribute Conversion.
-  
+
   set: (attributes = {}, options = {}) ->
     if options.cast then @setWithCasting(attributes) else _(@).extend(attributes)
     @
@@ -48,17 +48,17 @@ _(Model.prototype).extend
       setterName = "set#{k[0..0].toUpperCase()}#{k[1..k.length]}WithCasting"
       @[setterName] v if setterName of @
     @
-  
+
   # Model Conversion.
-  
+
   toHash: ->
     hash = {}
-    
+
     # Converting Attributes.
     for own k, v of @
       hash[k] = v unless /^_/.test k
     delete hash.errors
-      
+
     # Converting children objects.
     that = @
     for k in @constructor._children
@@ -97,14 +97,14 @@ _(Model).extend
       @prototype[setterName] = (v) ->
         v = if type then Model._cast(v, type) else v
         @[attr] = v
-        
+
   # Model Conversion.
-  
+
   _children: []
   children: (args...) -> @_children = @_children.concat args
-  
+
   fromHash: (hash, parent) -> @_fromHash hash, parent
-  
+
   _fromHash: (hash, parent) ->
     return hash unless hash._class
     klass = @getClass hash._class
@@ -113,7 +113,7 @@ _(Model).extend
     else
       # Creating object.
       obj = new klass()
-      
+
       # Restoring attributes.
       obj[k] = v for own k, v of hash
       delete obj._class

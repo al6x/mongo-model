@@ -4,7 +4,7 @@ execute = (cmd) ->
   # cmd.stdout.on 'data', (data) -> process.stdout.write data
   # cmd.stderr.on 'data', (data) -> process.stderr.write data
   # cmd.on 'exit', (code) ->
-  
+
   exec cmd, (err, stdout, stderr) ->
     return console.log err if err
     console.log stdout
@@ -13,7 +13,7 @@ task 'spec', 'Run Specs', ->
   # --reporter spec
   # --watch
   execute 'find ./spec -name "*spec.coffee" | xargs mocha --compilers coffee:coffee-script --watch'
-  
+
 task 'compile', 'Compile CoffeeScript to JavaScript', ->
   execute 'coffee --compile --output ./lib ./lib'
 

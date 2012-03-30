@@ -20,35 +20,35 @@ module.exports =
     options
 
   clear: (obj) -> delete obj[k] for own k, v of obj
-    
-  getId: (obj) -> 
-    if obj.isModel?() 
-      obj.getId() 
-    else 
+
+  getId: (obj) ->
+    if obj.isModel?()
+      obj.getId()
+    else
       if Driver.convertId then obj.id else obj._id
-  
-  setId: (obj, id) -> 
-    if obj.isModel?() 
-      obj.setId(id) 
-    else 
+
+  setId: (obj, id) ->
+    if obj.isModel?()
+      obj.setId(id)
+    else
       if Driver.convertId then obj.id = id else obj._id = id
-    
+
   convertSelectorId: (selector) ->
     if Driver.convertId
       selector = _(selector).clone()
       if selector.id
         selector._id = selector.id
         delete selector.id
-      selector    
+      selector
     else
       selector
-      
+
   convertDocIdToMongo: (hash) ->
     if Driver.convertId
       hash._id = hash.id if hash.id?
       delete hash.id
     hash
-      
+
   convertDocIdToDriver: (hash) ->
     if Driver.convertId
       hash.id = hash._id if hash._id?

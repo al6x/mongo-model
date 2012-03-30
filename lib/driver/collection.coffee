@@ -11,34 +11,34 @@ class Driver.Collection
       nCollection.drop callback
 
   # CRUD.
-  create: (obj, options..., callback) ->    
+  create: (obj, options..., callback) ->
     options = options[0] || {}
-    
+
     # Adding default options.
     options = helper.merge safe: Driver.safe, options
-    
+
     # Generate custom id if specified.
     if !helper.getId(obj) and Driver.generateId
       idGenerated = true
       helper.setId obj, Driver.generateId()
-      
+
     # Support for Model.
     doc = if obj.isModel?() then obj.toHash() else obj
-    
-    # Saving.    
-    @connect callback, (nCollection) ->     
-      mongoOptions = helper.cleanOptions options    
+
+    # Saving.
+    @connect callback, (nCollection) ->
+      mongoOptions = helper.cleanOptions options
       doc = helper.convertDocIdToMongo doc
       nCollection.insert doc, mongoOptions, (err, result) ->
         result = result[0] unless err
-        
+
         doc = helper.convertDocIdToDriver doc
         helper.setId obj, undefined if err and idGenerated
         helper.setId obj, helper.getId(doc) unless err
 
         callback err, result
 
-  update: (args..., callback) ->        
+  update: (args..., callback) ->
     [first, second, third] = args
     if first.isModel?()
       id = helper.getId(first) || throw new Error "can't update model without id!"
@@ -46,18 +46,18 @@ class Driver.Collection
     else
       [selector, obj, options] = [first, second, (third || {})]
     throw new Error "data object for update not provided!" unless obj
-    
+
     # Support for Model.
     doc = if obj.isModel?() then obj.toHash() else obj
 
-    # Adding default options. Because :multi works only with $ operators, 
+    # Adding default options. Because :multi works only with $ operators,
     # we need to check if it's applicable.
     options = if _(_(doc).keys()).any((k) -> /^\$/.test(k))
       helper.merge safe: Driver.safe, multi: Driver.multi, options
     else
       helper.merge safe: Driver.safe, options
 
-    # Saving.    
+    # Saving.
     @connect callback, (nCollection) ->
       mongoOptions = helper.cleanOptions options
       selector = helper.convertSelectorId selector
@@ -66,18 +66,18 @@ class Driver.Collection
         doc = helper.convertDocIdToDriver doc
         callback args...
 
-  delete: (args..., callback) ->    
+  delete: (args..., callback) ->
     [first, second] = args
     if first.isModel?()
       id = helper.getId(first) || throw new Error "invalid arguments for update!"
       [selector, options] = [{id: id}, (second || {})]
     else
       [selector, options] = [first, (second || {})]
-    
+
     # Adding default options.
     options = helper.merge safe: Driver.safe, options
 
-    # Saving.    
+    # Saving.
     @connect callback, (nCollection) ->
       mongoOptions = helper.cleanOptions options
       selector = helper.convertSelectorId selector
@@ -95,7 +95,7 @@ class Driver.Collection
   # You still can use `insert` and `remove`.
   insert: (args...) -> @create args...
   remove: (args...) -> @delete args...
-  
+
   # Querying.
 
   cursor: (args...) -> new Driver.Cursor @, args...
@@ -104,18 +104,18 @@ class Driver.Collection
 
   # Indexes.
 
-  ensureIndex: (args..., callback) ->  
-    @connect callback, (nCollection) ->      
+  ensureIndex: (args..., callback) ->
+    @connect callback, (nCollection) ->
       args.push callback
       nCollection.ensureIndex args...
-      
-  dropIndex: (args..., callback) ->     
+
+  dropIndex: (args..., callback) ->
     @connect callback, (nCollection) ->
       args.push callback
       nCollection.dropIndex args...
-  
+
   # Allows to defer Collection creation.
-  connect: (callback, next) ->    
+  connect: (callback, next) ->
     unless @nCollection
       @db.nDb.collection @name, @options, (err, nCollection) =>
         return callback err if err
@@ -123,7 +123,7 @@ class Driver.Collection
         next @nCollection
     else
       next @nCollection
-  
+
 
 # Making cursor's methods available directly on collection.
 methods = [

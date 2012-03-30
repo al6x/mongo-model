@@ -35,14 +35,14 @@ describe "Model", ->
     unit = new Unit()
     expect(unit.eq(1)).to.be false
     expect(unit.eq(null)).to.be false
-  
+
   it "should update attributes", ->
     class Tmp.User extends Model
 
     u = new Tmp.User()
     u.set name: 'Alex', hasMail: 'true', age: '31', banned: 'false'
     expect([u.name, u.hasMail, u.age, u.banned]).to.eql ['Alex', 'true', '31', 'false']
-  
+
   it "should provide helper for adding errors", ->
     class Unit extends Model
 
@@ -59,27 +59,27 @@ describe 'Attribute Conversion', ->
         name    : String
         hasMail : Boolean
         age     : Number
-  
+
     u = new Tmp.User()
     u.set {name: 'Alex', hasMail: 'true', age: '31'}, cast: true
     expect([u.name, u.hasMail, u.age]).to.eql ['Alex', true, 31]
-  
+
     # Should skip attributes if type not specified.
     u.set {unknown: false}, cast: true
     expect(u.unknown).to.be undefined
-  
+
   it "should inherit attribute types", ->
     class Tmp.User extends Model
       @cast age: Number
-  
+
     class Tmp.Writer extends Tmp.User
       @cast posts: Number
-  
+
     u = new Tmp.Writer()
     u.set {age: '20', posts: '12'}, cast: true
     expect([u.age, u.posts]).to.eql [20, 12]
-  
-  it 'should parse string values', ->    
+
+  it 'should parse string values', ->
     cases = [
       [Boolean, 'true',       true]
       [Number,  '12',         12]
@@ -88,7 +88,7 @@ describe 'Attribute Conversion', ->
     for cse in cases
       [type, raw, expected] = cse
       expect(Model._cast(raw, type)).to.eql expected
-  
+
     expect(Model._cast('2011-08-23', Date)).to.eql (new Date('2011-08-23'))
 
 describe "Model Conversion", ->
@@ -104,7 +104,7 @@ describe "Model Conversion", ->
     class Tmp.Tags extends Model
       constructor: -> @array = []
       push: (args...) -> @array.push args...
-      toArray: -> @array      
+      toArray: -> @array
     Tmp.Post.afterFromHash = (obj, hash) ->
       obj.tags = new Tmp.Tags
       obj.tags.array = hash.tags
@@ -127,28 +127,28 @@ describe "Model Conversion", ->
       comments : [{text: 'Some text', _class: 'Comment'}],
       tags     : ['a', 'b']
     }
-    
+
     # Converting to Hash.
     expect(post.toHash()).to.eql hash
-    
+
     [post.id, hash.id] = ['some id', 'some id']
     expect(post.toHash()).to.eql hash
-    
+
     # Converting from mongo.
     expect(Model.fromHash(hash).toHash()).to.eql hash
-    
+
   it "chldren should have `_parent` reference to the main object", ->
     class Tmp.Unit extends Model
       @children 'items'
     class Tmp.Item extends Model
-    
+
     unit = new Tmp.Unit()
     unit.items = [
       new Tmp.Item(name: 'Psionic blade')
       new Tmp.Item(name: 'Plasma shield')
     ]
-    
-    hash = unit.toHash()    
+
+    hash = unit.toHash()
     unit = Model.fromHash(hash)
     expect(unit._parent).to.be undefined
     expect(unit.items[0]._parent).to.eql unit

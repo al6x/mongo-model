@@ -7,11 +7,11 @@ class Driver.Db
     @name = name
     @nDb = new NDriver.Db(name, nServer, options)
 
-  collection: (name, options, callback) -> 
+  collection: (name, options, callback) ->
     collection = new Driver.Collection name, (options || {}), @
     callback?(null, collection)
     collection
-      
+
   open: (options..., callback) ->
     options = options[0] || {}
     throw new Error "callback required!" unless callback
