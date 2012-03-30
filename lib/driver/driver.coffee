@@ -1,7 +1,10 @@
-_ = require 'underscore'
+module.exports = Driver = {}
+
+_      = require 'underscore'
+Server = require './server'
 
 # ### Driver.
-module.exports = Driver =
+_(Driver).extend
   # Makes CRUD operation to throw error if there's something wrong (in native
   # mongo driver by default it's false).
   safe: true
@@ -13,14 +16,18 @@ module.exports = Driver =
   # BSON::ObjectId ids).
   # Set it as `null` if You want to disable it.
   idSize: 6
-  idSymbols: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".split('')
+  idSymbols: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
   generateId: ->
     [id, count] = ["", @idSize + 1]
     while count -= 1
       rand = Math.floor(Math.random() * @idSymbols.length)
       id += @idSymbols[rand]
     id
-
+    
+  # Use `id` instead of `_id` in objects, selectors, queries.
+  # Set it as `false` if You want to disable it.
+  convertId: true
+  
   # Setting for pagination helper.
   perPage: 25
   maxPerPage: 100
@@ -32,10 +39,13 @@ module.exports = Driver =
   # It's not actually async, but for consistency with other API it also
   # support callback-style usage.
   server: (args...) ->
-    callback = args.pop() if _.isFunction _(args).last()
+    callback = args.pop?() # if _.isFunction _(args).last()
     server = new Driver.Server(args...)
     process.nextTick -> callback null, server if callback
     server
+    
+  # Override to provide other behavior.
+  fromHash: (doc) -> doc
 
   # Get database by alias, by using connection setting defined in options.
   # It cache database and returns the same for the next calls.
@@ -61,7 +71,7 @@ module.exports = Driver =
     dbAlias = dbAlias[0] || 'default'
     throw new Error "callback required!" unless callback
 
-    @dbCache ||= {}
+    @dbCache ?= {}
     if db = @dbCache[dbAlias]
       callback null, db
     else

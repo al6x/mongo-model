@@ -1,20 +1,42 @@
-_     = require 'underscore'
-Model = require './model/model'
+_       = require 'underscore'
 
-module.exports = Model
+# Model.
+exports.Model = class Model
+  constructor: (attributes) ->
+    @set @defaults if @defaults
+    @set attributes if attributes
+    @errors = new Errors()
 
-# Mixing modules.
-require './model/cursor'
-require './model/errors'
+  eq: (other) -> _.isEqual @, other
 
-_([
-  'crud',
-  'persistence',
-  'query',
-  'validation',
-  'callbacks',
-  'misc'
-]).each (name) ->
-  mod = require "./model/#{name}"
-  _(Model.prototype).extend mod.methods
-  _(Model).extend mod.classMethods if mod.classMethods
+  set: (attributes = {}, options = {}) ->
+    @[k] = v for own k, v of attributes
+    @
+    
+  clear: -> delete @[k] for own k, v of @      
+    
+  valid: -> @errors.size() == 0
+  
+  invalid: -> !@valid()
+    
+# Errors.
+
+definePropertyWithoutEnumeration = (obj, name, value) ->
+  Object.defineProperty obj, name,
+      enumerable: false
+      writable: true
+      configurable: true
+      value: value
+
+exports.Errors = class Errors
+
+definePropertyWithoutEnumeration Errors.prototype, 'clear', -> 
+  delete @[k] for own k, v of @
+  
+definePropertyWithoutEnumeration Errors.prototype, 'add', (args...) ->
+  if args.length == 1
+    @add attr, message for attr, message of args[0]
+  else
+    [attr, message] = args
+    @[attr] ?= []
+    @[attr].push message

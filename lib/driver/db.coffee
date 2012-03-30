@@ -2,18 +2,16 @@ _       = require 'underscore'
 NDriver = require 'mongodb'
 Driver  = require './driver'
 
-module.exports = class Driver.Db
+class Driver.Db
   constructor: (name, nServer, options = {}) ->
     @name = name
     @nDb = new NDriver.Db(name, nServer, options)
 
-  collection: (name, options..., callback) ->
-    options = options[0] || {}
-    throw new Error "callback required!" unless callback
-    @nDb.collection name, options, (err, nCollection) =>
-      collection = new Driver.Collection(nCollection) unless err
-      callback err, collection
-
+  collection: (name, options, callback) -> 
+    collection = new Driver.Collection name, (options || {}), @
+    callback?(null, collection)
+    collection
+      
   open: (options..., callback) ->
     options = options[0] || {}
     throw new Error "callback required!" unless callback
@@ -45,9 +43,10 @@ module.exports = class Driver.Db
         else
           name = names[counter]
           counter += 1
-          @collection name, options, (err, collection) ->
+          @nDb.collection name, options, (err, nCollection) =>
             return callback err if err
-            collection.drop (err) ->
-              drop err
+            nCollection.drop (err) ->
+              return callback err if err
+              drop()
 
       drop()

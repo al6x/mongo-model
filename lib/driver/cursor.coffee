@@ -4,14 +4,13 @@ helper  = require '../helper'
 Driver  = require './driver'
 
 Model = null
-module.exports = class Driver.Cursor
-  constructor: (collectionGetter, selector = {}, options = {}) ->
-    [@collectionGetter, @selector, @options] = [collectionGetter, selector, options]
+class Driver.Cursor
+  constructor: (@collection, @selector = {}, @options = {}) ->
 
   find: (selector = {}, options = {}) ->
     selector = helper.merge @selector, selector
     options = helper.merge @options, options
-    new @constructor @collectionGetter, selector, options
+    new @constructor @collection, selector, options
 
   # Get first document.
   #
@@ -21,11 +20,12 @@ module.exports = class Driver.Cursor
   #   first selector, (err, doc) ->
   #   first selector, options, (err, doc) ->
   #
-  first: (args..., callback) ->
+  first: (args..., callback) ->    
     throw new Error "callback required!" unless callback
-    @all args..., (err, docs) ->
-      unless err
-        doc = docs[0] || null
+    [selector, options] = [(args[0] || {}), (args[1] || {})] 
+    options = helper.merge options, limit: 1
+    @all selector, options, (err, docs) ->
+      doc = docs[0] || null unless err
       callback err, doc
 
   # Get all documents.
@@ -84,10 +84,10 @@ module.exports = class Driver.Cursor
     if @nCursor
       @_next callback
     else
-      @collectionGetter @, (err, collection) =>
-        return callback err if err
+      @collection.connect callback, (nCollection) =>   
         options = helper.cleanOptions @options
-        @nCursor ||= collection.nCollection.find @selector, options
+        selector = helper.convertSelectorId @selector
+        @nCursor ?= nCollection.find selector, options
         @_next callback
 
   _next: (callback) ->
@@ -95,12 +95,15 @@ module.exports = class Driver.Cursor
     @nCursor.nextObject (err, doc) ->
       return callback err if err
       if doc
-        doc = that._processDoc doc unless that.options.object == false
-        callback err, doc
+        obj = if that.options.raw == true
+          doc
+        else
+          Driver.fromHash doc 
+        callback err, obj
       else
         that.nCursor = null
         callback err, null
-
+    
   # Usually cursor closed automatically.
   # The only exception - if You use `next' and stop somewhere in the middle
   # of returned result set, without retrieving all the remaining results. In this case
@@ -114,32 +117,22 @@ module.exports = class Driver.Cursor
     @nCursor = null
 
   count: (args..., callback) ->
-    throw new Error "callback required!" unless callback
     if args.length > 0
       @find(args...).count callback
-    else
-      @collectionGetter @, (err, collection) =>
-        return callback err if err
-        collection.nCollection.count @selector, callback
+    else    
+      @collection.connect callback, (nCollection) =>        
+        selector = helper.convertSelectorId @selector
+        nCollection.count selector, callback
 
   # CRUD.
 
   delete: (args..., callback) ->
-    throw new Error "callback required!" unless callback
-    args2 = []
-    if args[0] == true
-      withCallbacks = true
-      args.shift()
-      args2.push true
-
     if args.length > 0
-      args2.push callback
-      @find(args...).delete args2...
+      @find(args...).delete callback
     else
-      @collectionGetter @, (err, collection) =>
-        return callback err if err
-        args2 = args2.concat [@selector, @options, callback]
-        collection.delete args2...
+      selector = helper.convertSelectorId @selector
+      @collection.delete selector, @options, callback
+        
 
   # Helpers.
 
@@ -153,8 +146,8 @@ module.exports = class Driver.Cursor
       options = args[0] || {}
       page = helper.safeParseInt options.page
       perPage = helper.safeParseInt options.perPage
-    page ||= 1
-    perPage ||= Driver.perPage
+    page ?= 1
+    perPage ?= Driver.perPage
     perPage = Driver.maxPerPage if perPage > Driver.maxPerPage
     @skip((page - 1) * perPage).limit(perPage)
 
@@ -167,11 +160,3 @@ module.exports = class Driver.Cursor
   explain: (arg) -> @find {}, explain: arg
   fields: (arg) -> @find {}, fields: arg
   timeout: (arg) -> @find {}, timeout: arg
-
-  # Protected.
-
-  _processDoc: (doc) ->
-    if doc and doc._class
-      Model ||= require '../model'
-      doc = Model._fromMongo doc
-    doc

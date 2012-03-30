@@ -1,29 +1,10 @@
-helper = require '../lib/helper'
-Model  = require '../lib/model'
-require '../lib/sync'
+mongo = require '../lib/driver'
+require '../lib/driver/sync'
+require '../lib/driver/spec'
 
-require '../lib/spec'
+global.expect  = require 'expect.js'
+
 global.p = (args...) -> console.log args...
-
-# Patching should.
-should = require 'should'
-Object.defineProperty should.Assertion.prototype, 'exist',
-  set: () ->
-  get: () ->
-    unless this.negate
-      should.exist this.obj._wrapped
-    else
-      should.not.exist this.obj._wrapped
-  configurable: true
-
-# Namespace for temporarry objects.
-global.Tmp = {}
-beforeEach ->
-  global.Tmp = {}
-
-# Stubbing class loading.
-Model.getClass = (name) ->
-  Tmp[name] || (throw new Error "can't get '#{name}' class!")
 
 # Support for synchronous specs.
 global.itSync = (desc, callback) ->
@@ -39,10 +20,8 @@ global.itSync = (desc, callback) ->
     throw e
 
   it desc, (done) ->
+    that = @
     Fiber(->
-      callback(done)
+      callback.apply that, [done]
       done()
     ).run()
-
-global._     = require('underscore')._
-global.Model = Model

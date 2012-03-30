@@ -10,9 +10,10 @@ execute = (cmd) ->
     console.log stdout
 
 task 'spec', 'Run Specs', ->
-  #  --reporter spec
-  execute 'find ./spec -name "*spec.coffee" | xargs mocha --compilers coffee:coffee-script'
-
+  # --reporter spec
+  # --watch
+  execute 'find ./spec -name "*spec.coffee" | xargs mocha --compilers coffee:coffee-script --watch'
+  
 task 'compile', 'Compile CoffeeScript to JavaScript', ->
   execute 'coffee --compile --output ./lib ./lib'
 

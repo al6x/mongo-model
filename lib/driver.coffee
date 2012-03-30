@@ -1,5 +1,4 @@
-Driver = require './driver/driver'
-module.exports = Driver
+module.exports = require './driver/driver'
 
 require './driver/server'
 require './driver/db'
