@@ -22,13 +22,13 @@ module.exports =
   clear: (obj) -> delete obj[k] for own k, v of obj
 
   getId: (obj) ->
-    if obj.isModel?()
+    if obj.isModel
       obj.getId()
     else
       if Driver.convertId then obj.id else obj._id
 
   setId: (obj, id) ->
-    if obj.isModel?()
+    if obj.isModel
       obj.setId(id)
     else
       if Driver.convertId then obj.id = id else obj._id = id

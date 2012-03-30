@@ -23,7 +23,7 @@ class Driver.Collection
       helper.setId obj, Driver.generateId()
 
     # Support for Model.
-    doc = if obj.isModel?() then obj.toHash() else obj
+    doc = if obj.isModel then obj.toHash() else obj
 
     # Saving.
     @connect callback, (nCollection) ->
@@ -40,7 +40,7 @@ class Driver.Collection
 
   update: (args..., callback) ->
     [first, second, third] = args
-    if first.isModel?()
+    if first.isModel
       id = helper.getId(first) || throw new Error "can't update model without id!"
       [selector, obj, options] = [{id: id}, first, (second || {})]
     else
@@ -48,7 +48,7 @@ class Driver.Collection
     throw new Error "data object for update not provided!" unless obj
 
     # Support for Model.
-    doc = if obj.isModel?() then obj.toHash() else obj
+    doc = if obj.isModel then obj.toHash() else obj
 
     # Adding default options. Because :multi works only with $ operators,
     # we need to check if it's applicable.
@@ -68,7 +68,7 @@ class Driver.Collection
 
   delete: (args..., callback) ->
     [first, second] = args
-    if first.isModel?()
+    if first.isModel
       id = helper.getId(first) || throw new Error "invalid arguments for update!"
       [selector, options] = [{id: id}, (second || {})]
     else

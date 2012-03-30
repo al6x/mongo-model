@@ -6,11 +6,23 @@ class Driver.Db
   constructor: (name, nServer, options = {}) ->
     @name = name
     @nDb = new NDriver.Db(name, nServer, options)
+    @collectionMixins = {}
 
-  collection: (name, options, callback) ->
-    collection = new Driver.Collection name, (options || {}), @
-    callback?(null, collection)
-    collection
+  collection: (name, args...) ->
+    [second, third] = args
+    if second and !_.isFunction(second) and _(second).any((v) -> _.isFunction(v))
+      _(@collectionMixins[name] ?= {}).extend second
+    else
+      if third
+        [options, callback] = args
+      else
+        callback = second
+
+      collection = new Driver.Collection name, (second || {}), @
+      mixin = @collectionMixins[name] || {}
+      _(collection).extend mixin
+      callback?(null, collection)
+      collection
 
   open: (options..., callback) ->
     options = options[0] || {}

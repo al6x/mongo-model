@@ -1,6 +1,6 @@
-require './helper'
-mongo = require '../lib/driver'
-_     = require 'underscore'
+{Model} = require './helper'
+mongo   = require '../lib/driver'
+_       = require 'underscore'
 
 describe "Database", ->
   withMongo()
@@ -94,6 +94,12 @@ describe "Collection", ->
       units.find(name: 'Probe').delete()
       expect(units.count(name: 'Probe')).to.be 0
 
+  it "should support mixins", ->
+    @db.collection 'units',
+      alive: -> @count status: 'alive'
+    expect(@db.collection('units').alive).to.be.a 'function'
+    expect(@db.collection('other').alive).to.be undefined
+
 describe "Configuration", ->
   withMongo()
 
@@ -114,16 +120,52 @@ describe "Configuration", ->
     finally
       db.close() if db
 
+
 describe "Integration with Model", ->
   withMongo()
 
-  itSync "should save models", ->
-    model =
-      toHtml: -> {name: 'Probe'}
-      setId: (id) -> @id = id
-      getId: -> @id
-  
-    units = @db.collection 'units'
-    units.save model
-    expect(model.id).to.be.a 'string'
-    expect(units.first(name: 'Probe')).to.be 0
+  describe "CRUD", ->
+    itSync "should create", ->
+      units = @db.collection 'units'
+      unit = new Model name: 'Probe',  status: 'alive'
+      expect(units.create(unit)).not.to.be undefined
+      expect(unit.attrs.id).to.be.a 'string'
+      expect(units.first(name: 'Probe').attrs.status).to.eql 'alive'
+
+    itSync "should update", ->
+      units = @db.collection 'units'
+      unit = new Model name: 'Probe',  status: 'alive'
+      units.create unit
+      expect(units.first(name: 'Probe').attrs.status).to.be 'alive'
+      unit.attrs.status = 'dead'
+      units.update {id: unit.id}, unit
+      expect(units.first(name: 'Probe').attrs.status).to.be 'dead'
+      expect(units.count()).to.be 1
+
+    itSync "should delete", ->
+      units = @db.collection 'units'
+      unit = new Model name: 'Probe',  status: 'alive'
+      units.create unit
+      expect(units.delete(unit)).to.be 1
+      expect(units.count(name: 'Probe')).to.be 0
+
+    itSync "should use short string id (instead of BSON::ObjectId as default in mongo)", ->
+      units = @db.collection 'units'
+      unit = new Model name: 'Probe',  status: 'alive'
+      units.create unit
+      expect(unit.attrs.id).to.be.a 'string'
+
+  describe "Querying", ->
+    itSync "should return first element", ->
+      units = @db.collection 'units'
+      expect(units.first()).to.be null
+      units.save new Model name: 'Zeratul'
+      expect(units.first(name: 'Zeratul').attrs.name).to.be 'Zeratul'
+
+    itSync 'should return all elements', ->
+      units = @db.collection 'units'
+      expect(units.all()).to.eql []
+      units.save new Model name: 'Zeratul'
+      list = units.all(name: 'Zeratul')
+      expect(list).to.have.length 1
+      expect(list[0].attrs.name).to.be 'Zeratul'
