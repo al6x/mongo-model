@@ -8,9 +8,4 @@ class Driver.Server
     options ?= {}
     @nServer = new NDriver.Server(host, port, options)
 
-  db: (name, options..., callback) ->
-    options = options[0] || {}
-    throw new Error "callback required!" unless callback
-    db = new Driver.Db name, @nServer, options
-    db.open (err, ndb) ->
-      callback err, db
+  db: (name, options = {}) -> new Driver.Db name, @, options

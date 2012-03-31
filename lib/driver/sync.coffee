@@ -37,9 +37,7 @@ synchronizeMethods = (obj, methods) ->
     obj[name] = synchronize method
 
 objects = [
-  [Driver, ['db']]
-  [Driver.Server.prototype, ['db']]
-  [Driver.Db.prototype, ['open', 'collectionNames', 'clear']]
+  [Driver.Db.prototype, ['collectionNames', 'clear']]
   [Driver.Collection.prototype, ['drop', 'create', 'update', 'delete', 'save',
     'ensureIndex', 'dropIndex']]
   [Driver.Cursor.prototype, ['first', 'all', 'next', 'count', 'delete']]

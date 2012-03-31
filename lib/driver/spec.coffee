@@ -1,28 +1,19 @@
 mongo = require './driver'
 
-# Connecting to Mongo and cleaning database after each spec.
+# Connecting to Mongo and cleaning database before each spec.
 
 mongo._db = mongo.db
 global.withMongo = (options = {}) ->
 
-  # Connecting to Mongo.
+  # Connecting to clean test database.
   beforeEach (done) ->
-    that = @
-    mongo.db = (als, callback) -> callback null, that.db
+    mongo.db = (als) => @db
+    @db = mongo.server().db 'test'
+    @db.clear done
 
-    that.db = undefined
-    mongo.server (err, server) ->
-      return done err if err
-      server.db 'test', (err, db) ->
-        return done err if err
-        db.clear (err) ->
-          return done err if err
-          that.db = db
-          done()
-
-  # Closing Mongo connection.
+  # Closing test database.
   afterEach ->
+    mongo.db = mongo._db
     if @db
       @db.close()
-      @db = null
-      mongo.db = mongo._db
+      @db = undefined

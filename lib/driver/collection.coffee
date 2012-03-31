@@ -114,15 +114,16 @@ class Driver.Collection
       args.push callback
       nCollection.dropIndex args...
 
-  # Allows to defer Collection creation.
+  # Allows to defer actuall connection.
   connect: (callback, next) ->
-    unless @nCollection
-      @db.nDb.collection @name, @options, (err, nCollection) =>
-        return callback err if err
-        @nCollection = nCollection
-        next @nCollection
+    unless @_nCollection
+      @db.connect callback, (nDb) =>
+        nDb.collection @name, @options, (err, nCollection) =>
+          return callback err if err
+          @_nCollection = nCollection
+          next @_nCollection
     else
-      next @nCollection
+      next @_nCollection
 
 
 # Making cursor's methods available directly on collection.

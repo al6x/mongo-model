@@ -35,14 +35,8 @@ _(Driver).extend
   # Handy shortcut for configuring.
   configure: (options) -> _(@).extend options
 
-  # Handy shortcut, also support usage with callback.
-  # It's not actually async, but for consistency with other API it also
-  # support callback-style usage.
-  server: (args...) ->
-    callback = args.pop?() # if _.isFunction _(args).last()
-    server = new Driver.Server(args...)
-    process.nextTick -> callback null, server if callback
-    server
+  # Handy shortcut to create Server.
+  server: (args...) -> new Driver.Server(args...)
 
   # Override to provide other behavior.
   fromHash: (doc) -> doc
@@ -65,23 +59,14 @@ _(Driver).extend
   #
   # And now You can use database alias to get the actual database.
   #
-  #   mongo.db 'blog', (err, db) -> ...
+  #   db = mongo.db 'blog'
   #
-  db: (dbAlias..., callback) ->
-    dbAlias = dbAlias[0] || 'default'
-    throw new Error "callback required!" unless callback
-
-    @dbCache ?= {}
-    if db = @dbCache[dbAlias]
-      callback null, db
-    else
-      dbOptions = @databases?[dbAlias] || {}
-      # throw new Error "no setting for '#{dbAlias}' db alias!" unless dbOptions
-      server = @server dbOptions.host, dbOptions.port, dbOptions.options
-
-      dbName = dbOptions.name || 'default'
-      # throw new Error "no database name for '#{dbAlias}' db alias!" unless dbName
-      server.db dbName, (err, db) =>
-        return callback err if err
-        @dbCache[dbAlias] = db
-        callback null, db
+  db: (alias = 'default') ->
+    @databasesCache ?= {}
+    unless db = @databasesCache[alias]
+      options = @databases?[alias] || {}
+      server = @server options.host, options.port, options.options
+      name = options.name || 'default'
+      db = server.db name
+      @databasesCache[alias] = db
+    db
