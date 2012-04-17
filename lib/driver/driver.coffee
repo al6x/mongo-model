@@ -72,7 +72,7 @@ module.exports = Driver =
 
       dbName = dbOptions.name || 'default'
       # throw new Error "no database name for '#{dbAlias}' db alias!" unless dbName
-      dbAuth = dbOptions.auth.split(":") || null
+      dbAuth = dbOptions.auth.split(":") if dbOptions.auth?
       server.db dbName, (err, db) =>
         return callback err if err
         @dbCache[dbAlias] = db
