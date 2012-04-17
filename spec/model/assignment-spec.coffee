@@ -51,4 +51,4 @@ describe 'Model Attribute assignment', ->
       [type, raw, expected] = meta
       helper.cast(raw, type).should.eql expected
 
-    helper.cast('2011-08-23', Date).should.eql (new Date('2011-08-23'))
+    helper.cast('2011-08-23', Date).getTime().should.eql (new Date('2011-08-23').getTime())

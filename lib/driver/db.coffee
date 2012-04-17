@@ -55,7 +55,5 @@ module.exports = class Driver.Db
     throw new Error "callback required!" unless callback
     @nDb.authenticate username, password, (err, success) =>
       return callback err if err
-      if success
-        callback null, @
-      else  
-        callback new Error('Could not authenticate user ' + username), @
+      return callback new Error("Could not authenticate user #{username}") unless success
+      callback null, @

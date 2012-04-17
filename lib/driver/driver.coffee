@@ -72,14 +72,13 @@ module.exports = Driver =
 
       dbName = dbOptions.name || 'default'
       # throw new Error "no database name for '#{dbAlias}' db alias!" unless dbName
-      dbAuth = dbOptions.auth.split(":") if dbOptions.auth?
       server.db dbName, (err, db) =>
         return callback err if err
-        @dbCache[dbAlias] = db
-        if dbAuth?
-          db.authenticate dbAuth[0], dbAuth[1], (err, authenticated_db) ->
+        if dbOptions.username
+          db.authenticate dbOptions.username, dbOptions.password, (err, db) ->
             return callback err if err
-            throw new Error "callback required!" unless authenticated_db
-            callback null, authenticated_db
+            @dbCache[dbAlias] = db
+            callback null, db
         else
+          @dbCache[dbAlias] = db
           callback null, db
