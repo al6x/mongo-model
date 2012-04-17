@@ -51,6 +51,7 @@ module.exports = Driver =
   #       default:
   #         name: "default_production"
   #         host: "localhost"
+  #         auth: "auth_id:auth_pass"
   #   })
   #
   # And now You can use database alias to get the actual database.
@@ -71,7 +72,14 @@ module.exports = Driver =
 
       dbName = dbOptions.name || 'default'
       # throw new Error "no database name for '#{dbAlias}' db alias!" unless dbName
+      dbAuth = dbOptions.auth.split(":") if dbOptions.auth?
       server.db dbName, (err, db) =>
         return callback err if err
         @dbCache[dbAlias] = db
-        callback null, db
+        if dbAuth?
+          db.authenticate dbAuth[0], dbAuth[1], (err, authenticated_db) ->
+            return callback err if err
+            throw new Error "callback required!" unless authenticated_db
+            callback null, authenticated_db
+        else
+          callback null, db
