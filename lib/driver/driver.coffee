@@ -51,8 +51,6 @@ module.exports = Driver =
   #       default:
   #         name: "default_production"
   #         host: "localhost"
-  #         username: "username"
-  #         password: "password"
   #   })
   #
   # And now You can use database alias to get the actual database.
