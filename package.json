@@ -1,7 +1,7 @@
 {
   "name"         : "mongo-model",
   "main"         : "./lib/model",
-  "version"      : "0.3.3",
+  "version"      : "0.3.4",
   "homepage"     : "http://alexeypetrushin.github.com/mongo-model",
   "dependencies" : {
     "mongodb"    : "0.9.x",

@@ -44,8 +44,10 @@ exports.methods =
 exports.classMethods =
   _db: 'default'
 
-  db: (callback) ->
-    name = @_db || (throw new Error "database for '#{@name}' model not specified!")
+  db: (args...) ->
+    name = if _(args[0]).isString() then args.shift() else null
+    callback = args.pop()
+    name = name || @_db || (throw new Error "database for '#{@name}' model not specified!")
     Driver.db name, callback
 
   _collection: 'default'
