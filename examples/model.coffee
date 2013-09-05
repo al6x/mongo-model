@@ -1,7 +1,7 @@
 # Domain Model for MongoDB (Node.JS).
 #
 # [Slides, introduction](presentations/introduction/index.html) (with [video](http://www.youtube.com/watch?v=HB2Bkcgdjms)).
-# 
+#
 # [Slides from MoscowJS 2012](presentations/moscowjs12/index.html).
 
 # ### Features

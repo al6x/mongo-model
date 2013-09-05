@@ -4,7 +4,7 @@ execute = (cmd) ->
   # cmd.stdout.on 'data', (data) -> process.stdout.write data
   # cmd.stderr.on 'data', (data) -> process.stderr.write data
   # cmd.on 'exit', (code) ->
-  
+
   exec cmd, (err, stdout, stderr) ->
     return console.log err if err
     console.log stdout
