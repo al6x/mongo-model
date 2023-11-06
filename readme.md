@@ -1,8 +1,8 @@
 Model for MongoDB (Node.JS)
 
-Documentation http://alexeypetrushin.github.com/mongo-model
+Documentation [http://alexeypetrushin.github.com/mongo-model](https://al6x.github.io/mongo-model/model.html)
 
-Presentation http://alexeypetrushin.github.com/mongo-model/presentations/introduction/index.html ([video](http://www.youtube.com/watch?v=HB2Bkcgdjms))
+[Presentation](https://al6x.github.io/mongo-model/presentations/introduction/index.html), [video](http://www.youtube.com/watch?v=HB2Bkcgdjms)
 
 Installation `npm install mongo-model`
 
